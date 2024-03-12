@@ -1,0 +1,90 @@
+<main class="p-6">
+
+  <div class="grid xl:grid-cols-4 md:grid-cols-2 gap-6 mb-6">
+      <div class="card">
+          <!-- card -->
+          <div class="p-5 flex items-center justify-between">
+              <span>
+                  <span class="text-slate-400 font-semibold block">Total gestiones</span>
+                  <!-- <span class="text-xl font-semibold">{{ totalGestiones }}</span>  -->
+              </span>
+
+              <span
+                  class="flex justify-center items-center h-14 w-14 bg-blue-600/5 shadow shadow-blue-600/5 text-blue-600">
+                  <i class="uil uil-user text-xl"></i>
+              </span>
+          </div>
+
+      </div>
+  </div>
+  <div class="grid lg:grid-cols-2 gap-6 mb-6">
+    <div class="grid ">
+      <div class="">
+          <div class="flex justify-between items-center">
+              <h4 class="card-title mb-4">Crear reporte de Rantabilidad</h4>
+          </div>
+
+          <form [formGroup]="rentabilidadForm" (ngSubmit)="actualizarGrafico()" class="space-y-4 bg-white p-6 rounded-lg shadow-md">
+            <div class="flex flex-col">
+                <label for="utilidadBruta" class="mb-2 font-semibold text-gray-700">Utilidad Bruta:</label>
+                <input formControlName="utilidadBruta" type="number" placeholder="Utilidad Bruta" required class="form-input mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50">
+            </div>
+            
+            <div class="flex flex-col">
+                <label for="ventasNetas" class="mb-2 font-semibold text-gray-700">Ventas Netas:</label>
+                <input formControlName="ventasNetas" type="number" placeholder="Ventas Netas" required class="form-input mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50">
+            </div>
+            
+            <div class="flex flex-col">
+                <label for="utilidadOperacional" class="mb-2 font-semibold text-gray-700">Utilidad Operacional:</label>
+                <input formControlName="utilidadOperacional" type="number" placeholder="Utilidad Operacional" required class="form-input mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50">
+            </div>
+            
+            <div class="flex flex-col">
+                <label for="utilidadNeta" class="mb-2 font-semibold text-gray-700">Utilidad Neta:</label>
+                <input formControlName="utilidadNeta" type="number" placeholder="Utilidad Neta" required class="form-input mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50">
+            </div>
+            
+            <div class="flex flex-col">
+                <label for="patrimonioLiquido" class="mb-2 font-semibold text-gray-700">Patrimonio Líquido:</label>
+                <input formControlName="patrimonioLiquido" type="number" placeholder="Patrimonio Líquido" required class="form-input mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50">
+            </div>
+            
+            <div class="flex flex-col">
+                <label for="activoTotal" class="mb-2 font-semibold text-gray-700">Activo Total:</label>
+                <input formControlName="activoTotal" type="number" placeholder="Activo Total" required class="form-input mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50">
+            </div>
+            
+            <button type="submit" class="w-full text-white bg-blue-500 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Actualizar gráfico</button>
+        </form>
+        
+      </div>
+    
+  </div>
+
+      <div class="card">
+          <div class="p-5">
+              <div class="flex justify-between ">
+                  <h4 class="card-title mb-1">Grafica reporte</h4>
+              </div>
+
+              <div id="chart"></div>
+              <button class="btn btn-sm bg-light !text-sm text-gray-800 "  (click)="exportToPDF()">Exportar a PDF</button>
+
+            </div>
+
+          
+      </div>  
+  </div>
+
+  <div class="grid xl:grid-cols-2 gap-6">
+      <div class="card overflow-hidden">
+          <div class="card-header flex justify-between items-center">
+              <h4 class="card-title">Total de Reportes</h4>
+              <a  class="btn btn-sm bg-light !text-sm text-gray-800 ">Exportar</a>
+          </div>
+          
+      </div> 
+  </div>
+
+</main>

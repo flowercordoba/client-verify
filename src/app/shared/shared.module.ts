@@ -6,6 +6,7 @@ import { MenuSidebarComponent } from './menu-sidebar/menu-sidebar.component';
 import { RouterModule } from '@angular/router';
 import { FooterComponent } from './footer/footer.component';
 import { Page404Component } from './page404/page404.component';
+import { IndexModule } from '../components/index/index.module';
 
 
 
@@ -19,7 +20,8 @@ import { Page404Component } from './page404/page404.component';
   ],
   imports: [
     CommonModule,
-    RouterModule
+    RouterModule,
+    IndexModule
   ],
   exports:[
     HeaderComponent,

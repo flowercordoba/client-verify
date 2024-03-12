@@ -1,0 +1,58 @@
+<div class="grid xl:grid-cols-4 md:grid-cols-2 gap-6 mb-6">
+    <div class="card-user">
+
+        <app-total-card-user></app-total-card-user>
+
+    </div>
+    <!--end-->
+
+    <div class="card-company">
+        <app-total-card-company></app-total-card-company>
+
+        <div class="px-5 py-4 bg-slate-50">
+            <a href=""
+                class="relative inline-block font-semibold tracking-wide align-middle text-base text-center border-none after:content-[''] after:absolute after:h-px after:w-0 hover:after:w-full after:end-0 hover:after:end-auto after:bottom-0 after:start-0 after:transition-all after:duration-500 text-blue-600 hover:text-blue-600 after:bg-blue-600">View
+                data <i class="uil uil-arrow-right"></i></a>
+        </div>
+    </div>
+</div>
+
+<div class="grid lg:grid-cols-3 gap-6 mb-6">
+
+    <div class="lg:col-span-2">
+        <div class="card">
+            <app-grafic-stadistica-general></app-grafic-stadistica-general>
+        </div>
+    </div>
+
+
+    <div class="card">
+        <app-card-balance-general></app-card-balance-general>
+    </div>
+</div>
+
+<div class="grid xl:grid-cols-2 gap-6">
+    <div class="card overflow-hidden">
+        <div class="card-header flex justify-between items-center">
+            <h4 class="card-title">Listado de Empresas</h4>
+            <a href="javascript:void(0);" class="btn btn-sm bg-light !text-sm text-gray-800 ">Exportar</a>
+        </div>
+
+        <div class="overflow-x-auto">
+            <app-list-empresa></app-list-empresa>
+        </div>
+    </div>
+    <!-- end card-->
+
+    <div class="card overflow-hidden">
+        <div class="card-header flex justify-between items-center">
+            <h4 class="card-title">Lista de Usuarios</h4>
+            <a href="javascript:void(0);" class="btn btn-sm bg-light !text-sm text-gray-800 ">Exportar</a>
+        </div>
+
+        <div class="overflow-x-auto">
+            <app-list-usuarios></app-list-usuarios>
+        </div>
+    </div>
+    <!-- end card-->
+</div>

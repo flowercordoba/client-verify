@@ -1,0 +1,31 @@
+<!-- user.component.html -->
+<div class="card overflow-hidden">
+    <div class="card-header">
+      <h4 class="card-title">Lista de Usuarios</h4>
+      <p>Total de Usuarios: {{ totalUsuarios }}</p> <!-- Muestra el número total de usuarios -->
+    </div>
+    <div class="p-4">
+      <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200">
+          <thead>
+            <tr>
+              <th scope="col" class="px-6 py-3 text-start text-sm text-gray-500">Nombre</th>
+              <th scope="col" class="px-6 py-3 text-start text-sm text-gray-500">Email</th>
+              <th scope="col" class="px-6 py-3 text-end text-sm text-gray-500">Acción</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-200">
+            <!-- Itera sobre cada usuario y muestra su información -->
+            <tr *ngFor="let user of users">
+              <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800">{{ user.name }}</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">{{ user.email }}</td>
+              <td class="px-6 py-4 whitespace-nowrap text-end text-sm font-medium">
+                <a class="text-primary hover:text-sky-700" href="#">Eliminar</a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  

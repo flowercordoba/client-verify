@@ -1,0 +1,147 @@
+<main class="p-6">
+
+    <div class="grid xl:grid-cols-4 md:grid-cols-2 gap-6 mb-6">
+        <div class="card">
+            <!-- card -->
+            <div class="p-5 flex items-center justify-between">
+                <span>
+                    <span class="text-slate-400 font-semibold block">Total gestiones</span>
+                    <span class="text-xl font-semibold">{{ totalGestiones }}</span> 
+                </span>
+
+                <span
+                    class="flex justify-center items-center h-14 w-14 bg-blue-600/5 shadow shadow-blue-600/5 text-blue-600">
+                    <i class="uil uil-user text-xl"></i>
+                </span>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- crear reporte Iran los formularios -->
+    <div class="grid lg:grid-cols-2 gap-6 mb-6">
+
+        <div class="">
+            <div class="grid ">
+                <div class="">
+                    <div class="flex justify-between items-center">
+                        <h4 class="card-title mb-4">Crear Gestion</h4>
+                    </div>
+
+                    <form [formGroup]="gestionForm" (ngSubmit)="actualizarGrafico()" class="space-y-4 bg-white p-6 rounded-lg shadow-md">
+                        <!-- Total Pasivo -->
+                        <div class="flex flex-col">
+                            <label for="totalPasivo" class="mb-2 font-semibold text-gray-700">Total Pasivo:</label>
+                            <input formControlName="totalPasivo" type="number" placeholder="Total Pasivo" class="form-input mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+                        </div>
+                    
+                        <!-- Total Activo -->
+                        <div class="flex flex-col">
+                            <label for="totalActivo" class="mb-2 font-semibold text-gray-700">Total Activo:</label>
+                            <input formControlName="totalActivo" type="number" placeholder="Total Activo" class="form-input mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+                        </div>
+                    
+                        <!-- Pasivo Corriente -->
+                        <div class="flex flex-col">
+                            <label for="pasivoCorriente" class="mb-2 font-semibold text-gray-700">Pasivo Corriente:</label>
+                            <input formControlName="pasivoCorriente" type="number" placeholder="Pasivo Corriente" class="form-input mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+                        </div>
+                    
+                        <!-- Pasivo Total -->
+                        <div class="flex flex-col">
+                            <label for="pasivoTotal" class="mb-2 font-semibold text-gray-700">Pasivo Total:</label>
+                            <input formControlName="pasivoTotal" type="number" placeholder="Pasivo Total" class="form-input mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+                        </div>
+                    
+                        <!-- Ventas Netas -->
+                        <div class="flex flex-col">
+                            <label for="ventasNetas" class="mb-2 font-semibold text-gray-700">Ventas Netas:</label>
+                            <input formControlName="ventasNetas" type="number" placeholder="Ventas Netas" class="form-input mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+                        </div>
+                    
+                        <!-- Patrimonio -->
+                        <div class="flex flex-col">
+                            <label for="patrimonio" class="mb-2 font-semibold text-gray-700">Patrimonio:</label>
+                            <input formControlName="patrimonio" type="number" placeholder="Patrimonio" class="form-input mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+                        </div>
+                    
+                        <!-- Activo Corriente -->
+                        <div class="flex flex-col">
+                            <label for="activoCorriente" class="mb-2 font-semibold text-gray-700">Activo Corriente:</label>
+                            <input formControlName="activoCorriente" type="number" placeholder="Activo Corriente" class="form-input mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+                        </div>
+                    
+                        <!-- Cuentas por Cobrar Clientes -->
+                        <div class="flex flex-col">
+                            <label for="cuentasPorCobrarClientes" class="mb-2 font-semibold text-gray-700">Cuentas por Cobrar Clientes:</label>
+                            <input formControlName="cuentasPorCobrarClientes" type="number" placeholder="Cuentas por Cobrar Clientes" class="form-input mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+                        </div>
+                    
+                        <!-- Costo de Venta -->
+                        <div class="flex flex-col">
+                            <label for="costoDeVenta" class="mb-2 font-semibold text-gray-700">Costo de Venta:</label>
+                            <input formControlName="costoDeVenta" type="number" placeholder="Costo de Venta" class="form-input mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+                        </div>
+                    
+                        <!-- Inventario -->
+                        <div class="flex flex-col">
+                            <label for="inventario" class="mb-2 font-semibold text-gray-700">Inventario:</label>
+                            <input formControlName="inventario" type="number" placeholder="Inventario" class="form-input mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+                        </div>
+                    
+                        <!-- Cuentas por Pagar -->
+                        <div class="flex flex-col">
+                            <label for="cuentasPorPagar" class="mb-2 font-semibold text-gray-700">Cuentas por Pagar:</label>
+                            <input formControlName="cuentasPorPagar" type="number" placeholder="Cuentas por Pagar" class="form-input mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+                        </div>
+                    
+                        <button type="submit" class="w-full text-white bg-blue-500 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Actualizar gráfico</button>
+                    </form>
+                    
+                    
+                      
+                </div>
+              
+            </div>
+        </div>
+
+
+        <div class="card">
+            <div class="p-5">
+                <div class="flex justify-between ">
+                    <h4 class="card-title mb-1">Grafica reporte</h4>
+                </div>
+                <div id="chart"></div>
+                <button class="btn btn-sm bg-light !text-sm text-gray-800 "  (click)="exportToPDF()">Exportar a PDF</button>
+
+            </div>
+
+            
+        </div>  
+    </div>
+
+    <div class="grid xl:grid-cols-2 gap-6">
+        <div class="card overflow-hidden">
+            <div class="card-header flex justify-between items-center">
+                <h4 class="card-title">Total de Reportes</h4>
+                <a  class="btn btn-sm bg-light !text-sm text-gray-800 ">Exportar</a>
+            </div>
+
+            <app-lista-gestiones></app-lista-gestiones>
+            
+        </div> <!-- end card-->
+
+        <div class="card overflow-hidden">
+            <div class="card-header flex justify-between items-center">
+                <h4 class="card-title">Grafica Total</h4>
+            </div>
+
+            <div class="overflow-x-auto">
+                
+                <app-column-chart></app-column-chart>
+            </div>
+        </div>
+         <!-- end card-->
+    </div>
+
+</main>

@@ -1,22 +1,15 @@
-<div class="profile-menu">
-  <div class="flex flex-col items-center h-full gap-4 py-10 px-3">
+<!-- profile.component.html -->
+<div class="profile-menu" *ngIf="usuario$ | async as usuario">
+    <div class="flex flex-col items-center h-full gap-4 py-10 px-3">
       <!-- Profile Link -->
-      <a href="#" type="button" class="flex flex-col items-center gap-1">
-          <img src="assets/images/users/avatar-6.jpg" alt="user-image" class="rounded-full h-8 w-8">
-          <span class="font-medium text-base">Jamie D.</span>
-          <span class="text-sm">Admin</span>
+      <a  class="flex flex-col items-center gap-2">
+        <img src="https://res.cloudinary.com/dyvrrabjf/image/upload/v1704209776/ae151698-dcc0-4213-a90d-9da177d67913.jpg" alt="user-image" class="rounded-full h-10 w-10">
+        <!-- <img *ngIf="usuario.img" [src]="usuario.img" alt="user-image" class="rounded-full h-8 w-8"> -->
+        <span class="font-medium text-base">{{ usuario.name }}</span>
+        <!-- <span class="text-sm" >{{ usuario.role[0] }}</span> -->
       </a>
-
-     <app-search></app-search>
-
-      <!-- Fullscreen Toggle Button -->
-      <!-- <div class="flex">
-          <button data-toggle="fullscreen" type="button" class="bg-white rounded-full shadow-md p-2">
-              <span class="sr-only">Fullscreen Mode</span>
-              <span class="flex items-center justify-center h-6 w-6">
-                  <i class="uil uil-focus text-2xl"></i>
-              </span>
-          </button>
-      </div> -->
+  
+      <app-search></app-search>
+    </div>
   </div>
-</div>
+  

@@ -40,7 +40,7 @@ File: Main Css File
 
 @layer components {
   .card {
-    @apply sticky rounded-none border-e border-gray-200 top-0 h-screen z-40 transition-all duration-300;
+    // @apply sticky rounded-none border-e border-gray-200 top-0 h-screen z-40 transition-all duration-300;
 
     background-color: #fff; // Fondo blanco
     box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06); // Sombra suave

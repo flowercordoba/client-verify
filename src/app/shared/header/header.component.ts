@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { ProfileToggleService } from '../services/profile-toggle.service';
 
 @Component({
   selector: 'app-header',
@@ -6,5 +7,16 @@ import { Component } from '@angular/core';
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent {
+  constructor(private profileToggleService: ProfileToggleService) {}
 
+  onToggleProfileClick(): void {
+    this.profileToggleService.toggleVisibility();
+  }
+
+  onToggleMenuClick(): void {  
+    this.profileToggleService.toggleSidebarVisibility();
+  }
+  onToggleMenu(): void {
+    this.profileToggleService.toggleSidebarVisibility();
+  }
 }

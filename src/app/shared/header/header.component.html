@@ -1,1 +1,8 @@
-<p>header works!</p>
+<header class="app-header flex items-center px-5 gap-4">   
+  <app-button-toggle-menu (toggle)="onToggleMenu()"></app-button-toggle-menu>
+    <h4 class="text-slate-900 text-lg font-medium">Dashboard</h4>
+    <button id="button-toggle-profile" class="nav-link p-2 ms-auto" (click)="onToggleProfileClick()">
+      <app-button-toggle-profile></app-button-toggle-profile>
+    </button>
+  </header>
+  

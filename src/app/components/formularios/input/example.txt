@@ -1,0 +1,36 @@
+import { Component, Input } from '@angular/core';
+
+interface Indicador {
+  nombre: string;
+  valores: { [ano: number]: number };
+}
+
+@Component({
+  selector: 'app-input',
+  templateUrl: './input.component.html',
+  styleUrls: ['./input.component.scss']
+})
+export class InputComponent {
+  @Input() miPropiedad!: string;
+
+  anos: number[] = [2024];
+  indicadores: Indicador[] = [
+    { nombre: 'Margen Bruto', valores: {} },
+    { nombre: 'Margen Operativo', valores: {} },
+    { nombre: 'Margen Neto', valores: {} }
+  ];
+
+  agregarAno(): void {
+    const ultimoAno = this.anos[this.anos.length - 1];
+    this.anos.push(ultimoAno + 1);
+  }
+
+  agregarIndicador(): void {
+    const nuevoIndicador: Indicador = { nombre: '', valores: {} };
+    this.indicadores.push(nuevoIndicador);
+  }
+
+  eliminarIndicador(index: number): void {
+    this.indicadores.splice(index, 1);
+  }
+}

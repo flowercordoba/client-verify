@@ -1,27 +1,63 @@
-# Client
+<div *ngIf="empresas.length > 0; else noData" class="container mx-auto p-4">
+  <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+    <table class="min-w-full divide-y divide-gray-200">
+      <thead class="bg-gray-50">
+        <tr>
+          <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            Nombre de la Empresa
+          </th>
+          <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            Representante Legal
+          </th>
+        </tr>
+      </thead>
+      <tbody class="bg-white divide-y divide-gray-200">
+        <tr *ngFor="let empresa of empresas">
+          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+            {{ empresa.nombre }}
+          </td>
+          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+            {{ empresa.repLegal }}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.2.12.
+<ng-template #noData>
+  <div class="text-center">
+    <p>No hay empresas disponibles.</p>
+  </div>
+</ng-template>
 
-## Development server
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
 
-## Code scaffolding
+import { Component, OnInit } from '@angular/core';
+import { GestionService } from '../../services/gestion.service';
+import { Empresa } from '../../interfaces/gestion.interface';
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+@Component({
+  selector: 'app-lista-gestiones',
+  templateUrl: './lista-gestiones.component.html',
+  styleUrls: ['./lista-gestiones.component.scss']
+})
+export class ListaGestionesComponent implements OnInit {
+  empresas: Empresa[] = []; // Cambio a almacenar solo las empresas
 
-## Build
+  constructor(private gestionService: GestionService) {}
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+  ngOnInit(): void {
+    this.cargarGestiones();
+  }
 
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+  cargarGestiones(): void {
+    this.gestionService.getGestiones().subscribe({
+      next: (resp) => {
+        // Mapear la respuesta para extraer solo la información de las empresas
+        this.empresas = resp.gestiones.map(gestion => gestion.empresaId).filter(empresa => empresa !== null) as Empresa[];
+      },
+      error: (error) => console.error('Error al cargar las gestiones:', error)
+    });
+  }
+}

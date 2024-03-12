@@ -1,0 +1,8 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <select formControlName="yearSelect" class="form-select">
+      <option value="">Selecciona un año</option>
+      <option *ngFor="let year of getYears()" [value]="year">{{ year }}</option>
+    </select>
+    <button type="submit">Seleccionar</button>
+  </form>
+  

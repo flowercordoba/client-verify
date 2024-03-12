@@ -1,0 +1,40 @@
+
+  // exporta los dos graficos
+  exportToPDF() {
+    if (!this.chart || !this.chartLineChart) { // Usar || para comprobar que ambos gráficos están definidos.
+      console.error('Uno o ambos gráficos no están inicializados');
+      return;
+    }
+  
+    // Utiliza Promise.all para manejar ambas promesas de dataURI de los gráficos.
+    Promise.all([
+      this.chart.dataURI(), // Primera llamada para el primer gráfico
+      this.chartLineChart.dataURI() // Segunda llamada para el segundo gráfico
+    ]).then((results) => {
+      const pdf = new jsPDF();
+      pdf.setFontSize(16);
+      pdf.text('Título de la Liquidez', 20, 20);
+      let yOffset = 30;
+  
+      results.forEach((result, index) => {
+        // Realiza un chequeo de tipo para asegurarse de que 'imgURI' existe en el resultado
+        if ('imgURI' in result) {
+          pdf.addImage(result.imgURI, 'PNG', 15, yOffset, 180, 150);
+          yOffset += 160; // Ajusta la posición vertical para el próximo gráfico
+  
+          // Agrega una nueva página si es necesario
+          if (yOffset + 150 > pdf.internal.pageSize.getHeight()) {
+            pdf.addPage();
+            yOffset = 30; // Restablece el yOffset para la nueva página
+          }
+        } else {
+          console.error(`No se pudo obtener la URI de la imagen para el gráfico ${index + 1}.`);
+        }
+      });
+  
+      pdf.save('liquidez-graficos.pdf');
+    }).catch(error => {
+      console.error("Error al exportar los gráficos a PDF", error);
+    });
+  }
+  
