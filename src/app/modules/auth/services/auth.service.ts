@@ -23,7 +23,7 @@ export class AuthService {
 
   signup(data: IResgisterForm): Observable<UserModel> {
     return this.http
-      .post<UserModel>(`${this.base_url}/auth/register`, data, {
+      .post<UserModel>('http://localhost:3000/api/usuarios/register', data, {
         withCredentials: true,
       })
       .pipe(
