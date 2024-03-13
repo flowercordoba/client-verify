@@ -11,7 +11,16 @@ import jsPDF from 'jspdf';
 export class RentabilidadComponent implements OnInit {
 // recuerda el spinner de cargando! 
   rentabilidadForm: FormGroup;
-  chart: ApexCharts | null = null;
+  chartMargenes: ApexCharts | null = null;
+  chartRentabilidad: ApexCharts | null = null;
+
+  margenBruto: number = 0;
+  margenOperativo: number = 0;
+  margenNeto: number = 0;
+  rentabilidadPatrimonio: number = 0;
+  rentabilidadActivoTotal: number = 0;
+
+
 
   constructor(private fb: FormBuilder) {
     this.rentabilidadForm = this.fb.group({
@@ -27,9 +36,20 @@ export class RentabilidadComponent implements OnInit {
   ngOnInit(): void {
     this.rentabilidadForm.valueChanges.subscribe(() => {
       if (this.rentabilidadForm.valid) {
+        this.calcularResultados();
         this.actualizarGrafico();
       }
     });
+  }
+  calcularResultados(): void {
+    const { utilidadBruta, ventasNetas, utilidadOperacional, utilidadNeta, patrimonioLiquido, activoTotal } = this.rentabilidadForm.value;
+
+    // Cálculos directos sin proyección
+    this.margenBruto = utilidadBruta / ventasNetas;
+    this.margenOperativo = utilidadOperacional / ventasNetas;
+    this.margenNeto = utilidadNeta / ventasNetas;
+    this.rentabilidadPatrimonio = utilidadNeta / patrimonioLiquido;
+    this.rentabilidadActivoTotal = utilidadNeta / activoTotal;
   }
 
   actualizarGrafico(): void {
@@ -99,11 +119,11 @@ export class RentabilidadComponent implements OnInit {
     },
         };
 
-    if (this.chart) {
-      this.chart.updateOptions({ series: series });
+    if (this.chartMargenes) {
+      this.chartMargenes.updateOptions({ series: series });
     } else {
-      this.chart = new ApexCharts(document.querySelector("#chart"), options);
-      this.chart.render();
+      this.chartMargenes = new ApexCharts(document.querySelector("#chart"), options);
+      this.chartMargenes.render();
     }
   }
 
@@ -119,7 +139,7 @@ export class RentabilidadComponent implements OnInit {
   }
 
   exportToPDF() {
-    this.chart.dataURI().then((data: { imgURI?: string, blob?: Blob }) => {
+    this.chartMargenes.dataURI().then((data: { imgURI?: string, blob?: Blob }) => {
       if (data.imgURI) {
         const pdf = new jsPDF();
         // Título de la gráfica
