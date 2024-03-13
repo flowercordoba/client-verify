@@ -79,10 +79,58 @@
                   <h4 class="card-title mb-1">Grafica reporte</h4>
               </div>
 
-              <div id="chart"></div>
+              <div id="chartMargenes"></div>
               <button class="btn btn-sm bg-light !text-sm text-gray-800 "  (click)="exportToPDF()">Exportar a PDF</button>
 
             </div>
+
+            <div class="p-5">
+                <div class="flex justify-between ">
+                    <h4 class="card-title mb-1">Grafica reporte</h4>
+                </div>
+  
+                <div id="chartRentabilidad"></div>
+                <button class="btn btn-sm bg-light !text-sm text-gray-800 "  (click)="exportToPDF()">Exportar a PDF</button>
+  
+              </div>
+
+
+              <div class="p-5">
+                <h4 class="card-title mb-1">Resultados de Rentabilidad:</h4>
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Concepto</th>
+                      <th>Valor</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <!-- Resultados calculados -->
+                    <tr>
+                      <td>Margen Bruto</td>
+                      <td>{{ margenBruto | number:'1.2-2' }}</td>
+                    </tr>
+                    <tr>
+                      <td>Margen Operativo</td>
+                      <td>{{ margenOperativo | number:'1.2-2' }}</td>
+                    </tr>
+                    <tr>
+                      <td>Margen Neto</td>
+                      <td>{{ margenNeto | number:'1.2-2' }}</td>
+                    </tr>
+                    <tr>
+                      <td>Rentabilidad del Patrimonio</td>
+                      <td>{{ rentabilidadPatrimonio | number:'1.2-2' }}</td>
+                    </tr>
+                    <tr>
+                      <td>Rentabilidad del Activo Total</td>
+                      <td>{{ rentabilidadActivoTotal | number:'1.2-2' }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              
+              
 
           
       </div>  

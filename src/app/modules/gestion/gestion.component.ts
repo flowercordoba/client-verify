@@ -17,6 +17,10 @@ export class GestionComponent {
   gestionForm: FormGroup;
  chart: ApexCharts | null = null;
 
+ periodoDeCobro: number = 0;
+periodoDeInventario: number = 0;
+periodoDePago: number = 0;
+
  ngOnInit(): void {
   this.gestionForm = this.fb.group({
     ventasNetas: [null, Validators.required],

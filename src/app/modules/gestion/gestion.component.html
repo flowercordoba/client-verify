@@ -65,7 +65,10 @@
                         </div>
                       
                         <button type="submit" class="w-full text-white bg-blue-500 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Actualizar gráfico</button>
-                      </form>
+                        
+                    
+                    
+                    </form>
                       
                     
                       
@@ -84,6 +87,37 @@
                 <button class="btn btn-sm bg-light !text-sm text-gray-800 "  (click)="exportToPDF()">Exportar a PDF</button>
 
             </div>
+<!-- 
+            <div class="p-5">
+                <div class="flex justify-between">
+                  <h4 class="card-title mb-1">Resultados:</h4>
+                </div>
+                <div>
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Concepto</th>
+                        <th>Valor (días)</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>Periodo de Cobro</td>
+                        <td>{{ periodoDeCobro }}</td>
+                      </tr>
+                      <tr>
+                        <td>Periodo de Inventario</td>
+                        <td>{{ periodoDeInventario }}</td>
+                      </tr>
+                      <tr>
+                        <td>Periodo de Pago</td>
+                        <td>{{ periodoDePago }}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div> 
+              </div> -->
+              
 
             
         </div>  
@@ -96,7 +130,7 @@
                 <a  class="btn btn-sm bg-light !text-sm text-gray-800 ">Exportar</a>
             </div>
 
-            <app-lista-gestiones></app-lista-gestiones>
+            <!-- <app-lista-gestiones></app-lista-gestiones> -->
             
         </div> <!-- end card-->
 
@@ -107,7 +141,7 @@
 
             <div class="overflow-x-auto">
                 
-                <app-column-chart></app-column-chart>
+                <!-- <app-column-chart></app-column-chart> -->
             </div>
         </div>
          <!-- end card-->

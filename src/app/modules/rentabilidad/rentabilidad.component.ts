@@ -9,11 +9,10 @@ import jsPDF from 'jspdf';
   styleUrls: ['./rentabilidad.component.scss']
 })
 export class RentabilidadComponent implements OnInit {
-// recuerda el spinner de cargando! 
   rentabilidadForm: FormGroup;
   chartMargenes: ApexCharts | null = null;
   chartRentabilidad: ApexCharts | null = null;
-
+  
   margenBruto: number = 0;
   margenOperativo: number = 0;
   margenNeto: number = 0;
@@ -37,122 +36,199 @@ export class RentabilidadComponent implements OnInit {
     this.rentabilidadForm.valueChanges.subscribe(() => {
       if (this.rentabilidadForm.valid) {
         this.calcularResultados();
-        this.actualizarGrafico();
+        // this.actualizarGrafico();
       }
     });
   }
   calcularResultados(): void {
     const { utilidadBruta, ventasNetas, utilidadOperacional, utilidadNeta, patrimonioLiquido, activoTotal } = this.rentabilidadForm.value;
-
-    // Cálculos directos sin proyección
+  
     this.margenBruto = utilidadBruta / ventasNetas;
     this.margenOperativo = utilidadOperacional / ventasNetas;
     this.margenNeto = utilidadNeta / ventasNetas;
     this.rentabilidadPatrimonio = utilidadNeta / patrimonioLiquido;
     this.rentabilidadActivoTotal = utilidadNeta / activoTotal;
   }
+  
 
+  // actualizarGrafico(): void {
+  //   const { utilidadBruta, ventasNetas, utilidadOperacional, utilidadNeta, patrimonioLiquido, activoTotal } = this.rentabilidadForm.value;
+
+  //   const rentabilidadBruta = utilidadBruta / ventasNetas;
+  //   const rentabilidadOperacional = utilidadOperacional / ventasNetas;
+  //   const rentabilidadNeta = utilidadNeta / ventasNetas;
+  //   const rentabilidadPatrimonio = utilidadNeta / patrimonioLiquido;
+  //   const rentabilidadActivoTotal = utilidadNeta / activoTotal;
+
+  //   const series = [
+  //     {
+  //       name: 'Margen Bruto',
+  //       data: this.calcularProyeccion(rentabilidadBruta, 5, 0.05)
+  //     },
+  //     {
+  //       name: 'Margen Operativo',
+  //       data: this.calcularProyeccion(rentabilidadOperacional, 5, 0.05)
+  //     },
+  //     {
+  //       name: 'Margen Neto',
+  //       data: this.calcularProyeccion(rentabilidadNeta, 5, 0.05)
+  //     },
+  //     {
+  //       name: 'Rentabilidad del Patrimonio',
+  //       data: this.calcularProyeccion(rentabilidadPatrimonio, 5, 0.05)
+  //     },
+  //     {
+  //       name: 'Rentabilidad del Activo Total',
+  //       data: this.calcularProyeccion(rentabilidadActivoTotal, 5, 0.05)
+  //     }
+  //   ];
+
+  //   const options = {
+  //     series: series,
+  //     chart: {
+  //       type: 'bar',
+  //       height: 350
+  //     },
+  //     xaxis: {
+  //       categories: ['2024', '2025', '2026', '2027', '2028'] 
+  //     },
+  //     title: {
+  //       text: 'Análisis de Rentabilidad', 
+  //       align: 'left', 
+  //       style: {
+  //           fontSize: '10px',
+  //           fontWeight: 'bold',
+  //           color: '#263238'
+  //       }
+  //   },
+  //   plotOptions: {
+  //       bar: {
+  //           horizontal: false,
+  //           columnWidth: '45%',
+  //           endingShape: 'rounded'
+  //       },
+  //   },
+  //   dataLabels: {
+  //       enabled: false
+  //   },
+  //   stroke: {
+  //       show: false,
+  //       width: 2,
+  //       colors: ['transparent']
+  //   },
+  //       };
+
+  //   if (this.chartMargenes) {
+  //     this.chartMargenes.updateOptions({ series: series });
+  //   } else {
+  //     this.chartMargenes = new ApexCharts(document.querySelector("#chart"), options);
+  //     this.chartMargenes.render();
+  //   }
+  // }
   actualizarGrafico(): void {
-    const { utilidadBruta, ventasNetas, utilidadOperacional, utilidadNeta, patrimonioLiquido, activoTotal } = this.rentabilidadForm.value;
-
-    const rentabilidadBruta = utilidadBruta / ventasNetas;
-    const rentabilidadOperacional = utilidadOperacional / ventasNetas;
-    const rentabilidadNeta = utilidadNeta / ventasNetas;
-    const rentabilidadPatrimonio = utilidadNeta / patrimonioLiquido;
-    const rentabilidadActivoTotal = utilidadNeta / activoTotal;
-
-    const series = [
+    // Datos para el gráfico de márgenes
+    const seriesMargenes = [
       {
         name: 'Margen Bruto',
-        data: this.calcularProyeccion(rentabilidadBruta, 5, 0.05)
+        data: [this.margenBruto]
       },
       {
         name: 'Margen Operativo',
-        data: this.calcularProyeccion(rentabilidadOperacional, 5, 0.05)
+        data: [this.margenOperativo]
       },
       {
         name: 'Margen Neto',
-        data: this.calcularProyeccion(rentabilidadNeta, 5, 0.05)
-      },
+        data: [this.margenNeto]
+      }
+    ];
+  
+    // Datos para el gráfico de rentabilidad
+    const seriesRentabilidad = [
       {
         name: 'Rentabilidad del Patrimonio',
-        data: this.calcularProyeccion(rentabilidadPatrimonio, 5, 0.05)
+        data: [this.rentabilidadPatrimonio]
       },
       {
         name: 'Rentabilidad del Activo Total',
-        data: this.calcularProyeccion(rentabilidadActivoTotal, 5, 0.05)
+        data: [this.rentabilidadActivoTotal]
       }
     ];
-
-    const options = {
-      series: series,
+  
+    // Opciones para el gráfico de márgenes
+    const optionsMargenes = {
+      series: seriesMargenes,
       chart: {
         type: 'bar',
         height: 350
       },
       xaxis: {
-        categories: ['2024', '2025', '2026', '2027', '2028'] 
+        categories: ['2024']
       },
-      title: {
-        text: 'Análisis de Rentabilidad', 
-        align: 'left', 
-        style: {
-            fontSize: '10px',
-            fontWeight: 'bold',
-            color: '#263238'
-        }
-    },
-    plotOptions: {
-        bar: {
-            horizontal: false,
-            columnWidth: '45%',
-            endingShape: 'rounded'
-        },
-    },
-    dataLabels: {
-        enabled: false
-    },
-    stroke: {
-        show: false,
-        width: 2,
-        colors: ['transparent']
-    },
-        };
-
+      stroke: {
+        curve: 'straight'
+      }
+    };
+  
+    // Opciones para el gráfico de rentabilidad
+    const optionsRentabilidad = {
+      series: seriesRentabilidad,
+      chart: {
+        type: 'bar',
+        height: 350
+      },
+      xaxis: {
+        categories: ['2024']
+      },
+      stroke: {
+        curve: 'straight'
+      }
+    };
+  
+    // Inicializar o actualizar el gráfico de márgenes
     if (this.chartMargenes) {
-      this.chartMargenes.updateOptions({ series: series });
+      this.chartMargenes.updateOptions(optionsMargenes);
     } else {
-      this.chartMargenes = new ApexCharts(document.querySelector("#chart"), options);
+      this.chartMargenes = new ApexCharts(document.querySelector("#chartMargenes"), optionsMargenes);
       this.chartMargenes.render();
     }
-  }
-
-  calcularProyeccion(valorInicial: number, anos: number, tasaIncremento: number): number[] {
-    let valorActual = valorInicial;
-    const proyeccion = [valorActual]; // Incluye el valor inicial en la proyección
-
-    for (let i = 1; i < anos; i++) { // Comienza en 1 porque ya incluimos el año inicial
-      valorActual *= (1 + tasaIncremento); // Incremento del 5% anual
-      proyeccion.push(valorActual);
+  
+    // Inicializar o actualizar el gráfico de rentabilidad
+    if (this.chartRentabilidad) {
+      this.chartRentabilidad.updateOptions(optionsRentabilidad);
+    } else {
+      this.chartRentabilidad = new ApexCharts(document.querySelector("#chartRentabilidad"), optionsRentabilidad);
+      this.chartRentabilidad.render();
     }
-    return proyeccion;
   }
-
+  
   exportToPDF() {
-    this.chartMargenes.dataURI().then((data: { imgURI?: string, blob?: Blob }) => {
-      if (data.imgURI) {
-        const pdf = new jsPDF();
-        // Título de la gráfica
-        pdf.setFontSize(16);
-        pdf.text('Titulo de la grafica', 20, 20);
-        // Añade la gráfica al PDF
-        pdf.addImage(data.imgURI, 'PNG', 15, 20, 180, 150);
-
-        // pdf.addImage(data.imgURI, 'PNG', 10, 30, 180, 100); // Ajusta según necesidades
-        pdf.save('dashed-line-chart.pdf');
-      } else {
-        console.error("No se pudo obtener la URI de la imagen de la gráfica.");
+    Promise.all([
+      this.chartMargenes.dataURI(),
+      this.chartRentabilidad.dataURI()
+    ]).then((dataURIs) => {
+      const pdf = new jsPDF();
+      pdf.setFontSize(16);
+      pdf.text('Análisis de Rentabilidad', 20, 20);
+  
+      // Añade la primera gráfica al PDF
+      const firstChartURI = dataURIs[0] as { imgURI: string; blob?: Blob };
+      if (firstChartURI.imgURI) {
+        pdf.addImage(firstChartURI.imgURI, 'PNG', 15, 40, 180, 80);
       }
-    }).catch(error => console.error("Error al exportar la gráfica a PDF", error));
+  
+      // Añade la segunda gráfica en una nueva página
+      const secondChartURI = dataURIs[1] as { imgURI: string; blob?: Blob };
+      if (secondChartURI.imgURI) {
+        pdf.addPage();
+        pdf.text('Continuación Análisis de Rentabilidad', 20, 20);
+        pdf.addImage(secondChartURI.imgURI, 'PNG', 15, 40, 180, 80);
+      }
+  
+      pdf.save('analisis-rentabilidad.pdf');
+    }).catch(error => {
+      console.error("Error al exportar las gráficas a PDF", error);
+    });
   }
+  
+  
 }
