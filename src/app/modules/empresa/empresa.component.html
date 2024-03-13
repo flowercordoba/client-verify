@@ -1,1 +1,76 @@
-<p>empresa works!</p>
+<main class="p-6">
+
+    <div class="grid lg:grid-cols-2 gap-6 mb-6">
+        <div class="grid">
+            <div class="">
+                <div class="flex justify-between items-center">
+                    <h4 class="card-title mb-4">Crear Empresa</h4>
+                </div>
+            </div>
+            <form class="space-y-4">
+                <div>
+                    <label for="nombre" class="block text-sm font-medium text-gray-700">Nombre</label>
+                    <input type="text" id="nombre" name="nombre" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                </div>
+                
+                <div>
+                    <label for="nit" class="block text-sm font-medium text-gray-700">NIT</label>
+                    <input type="text" id="nit" name="nit" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                </div>
+    
+                <div>
+                    <label for="repLegal" class="block text-sm font-medium text-gray-700">Representante Legal</label>
+                    <input type="text" id="repLegal" name="repLegal" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                </div>
+    
+                <div>
+                    <label for="disponible" class="flex items-center">
+                        <input type="checkbox" id="disponible" name="disponible" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50">
+                        <span class="ml-2 text-sm text-gray-700">Disponible</span>
+                    </label>
+                </div>
+    
+                <div>
+                    <label for="direccion" class="block text-sm font-medium text-gray-700">Dirección</label>
+                    <input type="text" id="direccion" name="direccion" placeholder="Calle y número" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                    <input type="text" id="ciudad" name="ciudad" placeholder="Ciudad" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                    <input type="text" id="estado" name="estado" placeholder="Estado/Departamento" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                    <input type="text" id="codigoPostal" name="codigoPostal" placeholder="Código Postal" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                    <input type="text" id="pais" name="pais" placeholder="País" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                </div>
+    
+                <div>
+                    <label for="telefono" class="block text-sm font-medium text-gray-700">Teléfono</label>
+                    <input type="tel" id="telefono" name="telefono" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                </div>
+    
+                <div>
+                    <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+                    <input type="email" id="email" name="email" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                </div>
+    
+                <div>
+                    <label for="website" class="block text-sm font-medium text-gray-700">Sitio Web</label>
+                    <input type="url" id="website" name="website" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                </div>
+    
+                <div>
+                    <label for="sector" class="block text-sm font-medium text-gray-700">Sector</label>
+                    <input type="text" id="sector" name="sector" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                </div>
+    
+                <div>
+                    <label for="reportesFinancieros" class="block text-sm font-medium text-gray-700">Reportes Financieros (IDs)</label>
+                    <input type="text" id="reportesFinancieros" name="reportesFinancieros" placeholder="Agrega IDs separados por comas" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                </div>
+    
+                <div class="text-right">
+                    <button type="submit" class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:border-indigo-700 focus:ring focus:ring-indigo-200">Enviar</button>
+                </div>
+            </form>
+        </div>´
+
+        <app-listar></app-listar>
+    </div>
+
+</main>
