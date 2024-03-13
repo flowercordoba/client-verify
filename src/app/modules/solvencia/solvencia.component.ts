@@ -1,211 +1,160 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import jsPDF from 'jspdf';
+import ApexCharts from 'apexcharts';
 
 @Component({
   selector: 'app-solvencia',
   templateUrl: './solvencia.component.html',
   styleUrls: ['./solvencia.component.scss']
 })
-export class SolvenciaComponent {
- // recuerda el spinner de cargando! 
- solvenciaForm: FormGroup;
- chart: ApexCharts | null = null;
- chart2: ApexCharts | null = null;
- 
- constructor(private fb: FormBuilder) {
+export class SolvenciaComponent implements OnInit {
+  solvenciaForm: FormGroup;
+  chart: ApexCharts | null = null;
+  chart2: ApexCharts | null = null;
+
+  nivelEndeudamiento: number = 0;
+  concentracionEndeudamientoCortoPlazo: number = 0;
+  endeudamientoVentas: number = 0;
+  multiplicadorCapital: number = 0;
+
+  constructor(private fb: FormBuilder) {
     this.solvenciaForm = this.fb.group({
-        totalPasivo: [null, Validators.required],
-        totalActivo: [null, Validators.required],
-        pasivoCorriente: [null, Validators.required],
-        pasivoTotal: [null, Validators.required],
-        ventasNetas: [null, Validators.required],
-        patrimonio: [null, Validators.required]
-      });
-      
- }
+      totalPasivo: [null, Validators.required],
+      totalActivo: [null, Validators.required],
+      pasivoCorriente: [null, Validators.required],
+      pasivoTotal: [null, Validators.required],
+      ventasNetas: [null, Validators.required],
+      patrimonio: [null, Validators.required]
+    });
+  }
 
- ngOnInit(): void {
-   this.solvenciaForm.valueChanges.subscribe(() => {
-     if (this.solvenciaForm.valid) {
-       this.actualizarGrafico();
-    //    this.actualizarGrafico2();
-    //    otra grafica
-     }
-   });
- }
+  ngOnInit(): void {
+    this.solvenciaForm.valueChanges.subscribe(() => {
+      if (this.solvenciaForm.valid) {
+        this.actualizarGrafico();
+      }
+    });
+  }
 
- actualizarGrafico(): void {
-  
+  actualizarGrafico(): void {
     const { totalPasivo, totalActivo, pasivoCorriente, pasivoTotal, ventasNetas, patrimonio } = this.solvenciaForm.value;
 
-    const nivelEndeudamiento = totalPasivo / totalActivo;
-    const concentracionEndeudamientoCortoPlazo = pasivoCorriente / pasivoTotal;
-    const endeudamientoVentas = pasivoTotal / ventasNetas;
-    const multiplicadorCapital = totalActivo / patrimonio;
+    // Conversión de string a número después de toFixed
+    this.nivelEndeudamiento = +((totalPasivo / totalActivo).toFixed(2));
+    this.concentracionEndeudamientoCortoPlazo = +((pasivoCorriente / pasivoTotal).toFixed(2));
+    this.endeudamientoVentas = +((pasivoTotal / ventasNetas).toFixed(2));
+    this.multiplicadorCapital = +((totalActivo / patrimonio).toFixed(2));
 
-    // 
-
-// Obligaciones financieras
-// Cuentas por pagar Comerciales y Otras cuentas por pagar
-// Impuesto sobre las Utilidades
-// Total pasivo corriente
-    
-
-  
-    const series = [
+    // Actualización de los datos para el primer gráfico
+    const series1 = [
       {
         name: 'Nivel de Endeudamiento',
-        data: this.calcularProyeccion(nivelEndeudamiento, 5, 0.05)
+        data: [this.nivelEndeudamiento]
       },
       {
         name: 'Concentración Endeudamiento Corto Plazo',
-        data: this.calcularProyeccion(concentracionEndeudamientoCortoPlazo, 5, 0.05)
-      },
+        data: [this.concentracionEndeudamientoCortoPlazo]
+      }
+    ];
+
+    // Actualización de los datos para el segundo gráfico
+    const series2 = [
       {
         name: 'Endeudamiento / Ventas',
-        data: this.calcularProyeccion(endeudamientoVentas, 5, 0.05)
+        data: [this.endeudamientoVentas]
       },
       {
         name: 'Multiplicador de Capital',
-        data: this.calcularProyeccion(multiplicadorCapital, 5, 0.05)
+        data: [this.multiplicadorCapital]
       }
     ];
-    const series2 = [
-      {
-        name: 'Nivel de Endeudamiento',
-        data: this.calcularProyeccion(nivelEndeudamiento, 5, 0.05)
+
+    // Configuraciones del gráfico 1
+    const options1 = {
+      series: series1,
+      chart: {
+        type: 'bar',
+        height: 350
       },
-      {
-        name: 'Deuda a  Corto Plazo',
-        data: this.calcularProyeccion(concentracionEndeudamientoCortoPlazo, 5, 0.05)
+      plotOptions: {
+        bar: {
+          horizontal: false,
+          columnWidth: '55%',
+          endingShape: 'rounded'
+        }
       },
-    
-    
-    ];
-
-   const options = {
-     series: series,
-     chart: {
-       type: 'bar',
-       height: 350
-     },
-     xaxis: {
-       categories: ['2024'] 
-     },
-     title: {
-       text: 'ESTRUCTURA DE FINANCIAMIENTO', 
-       align: 'left', 
-       style: {
-           fontSize: '10px',
-           fontWeight: 'bold',
-           color: '#263238'
-       }
-   },
-   plotOptions: {
-       bar: {
-           horizontal: false,
-           columnWidth: '45%',
-           endingShape: 'rounded'
-       },
-   },
-   dataLabels: {
-       enabled: false
-   },
-   stroke: {
-       show: false,
-       width: 2,
-       colors: ['transparent']
-   },
-       };
-
-   if (this.chart) {
-     this.chart.updateOptions({ series: series });
-   } else {
-     this.chart = new ApexCharts(document.querySelector("#chart"), options);
-     this.chart.render();
-   }
-
-
-   
-   const options2 = {
-    series: series2,
-    chart: {
-      type: 'line',
-      height: 350
-    },
-    xaxis: {
-      categories: ['2024'] 
-    },
-    title: {
-      text: 'ESTRUCTURA DE LOS PASIVOS', 
-      align: 'left', 
-      style: {
-          fontSize: '10px',
-          fontWeight: 'bold',
-          color: '#263238'
+      dataLabels: {
+        enabled: false
+      },
+      xaxis: {
+        categories: ['Indicadores Financieros']
       }
-  },
-    stroke: {
-      curve: 'straight'
-    },
-    markers: {
-      size: 4
-    },
-    tooltip: {
-      shared: true,
-      intersect: false
-    },
-    legend: {
-      // position: 'top',
-      horizontalAlign: 'right',
-      floating: true,
-      offsetY: -25,
-      offsetX: -5
+    };
+
+    // Configuraciones del gráfico 2
+    const options2 = {
+      series: series2,
+      chart: {
+        type: 'bar',
+        height: 350
+      },
+      plotOptions: {
+        bar: {
+          horizontal: false,
+          columnWidth: '55%',
+          endingShape: 'rounded'
+        }
+      },
+      dataLabels: {
+        enabled: false
+      },
+      xaxis: {
+        categories: ['Indicadores Financieros']
+      }
+    };
+
+    // Renderizar el primer gráfico
+    if (this.chart) {
+      this.chart.updateOptions(options1);
+    } else {
+      this.chart = new ApexCharts(document.querySelector("#chart"), options1);
+      this.chart.render();
     }
-  };
 
-  // Renderizar la segunda gráfica (línea)
-  if (this.chart2) {
-    this.chart2.updateOptions(options2);
-  } else {
-    this.chart2 = new ApexCharts(document.querySelector("#chart2"), options2);
-    this.chart2.render();
+    // Renderizar el segundo gráfico
+    if (this.chart2) {
+      this.chart2.updateOptions(options2);
+    } else {
+      this.chart2 = new ApexCharts(document.querySelector("#chart2"), options2);
+      this.chart2.render();
+    }
   }
 
- }
-
- 
-
-
- calcularProyeccion(valorInicial: number, anos: number, tasaIncremento: number): number[] {
-   let valorActual = valorInicial;
-   const proyeccion = [valorActual]; // Incluye el valor inicial en la proyección
-
-   for (let i = 1; i < anos; i++) { // Comienza en 1 porque ya incluimos el año inicial
-     valorActual *= (1 + tasaIncremento); // Incremento del 5% anual
-     proyeccion.push(valorActual);
-   }
-   return proyeccion;
- }
-
- exportToPDF() {
-   this.chart.dataURI().then((data: { imgURI?: string, blob?: Blob }) => {
-     if (data.imgURI) {
-       const pdf = new jsPDF();
-       // Título de la gráfica
-       pdf.setFontSize(16);
-       pdf.text('Graficas', 20, 20);
-       // Añade la gráfica al PDF
-       pdf.addImage(data.imgURI, 'PNG', 15, 20, 180, 150);
-
-       // pdf.addImage(data.imgURI, 'PNG', 10, 30, 180, 100); // Ajusta según necesidades
-       pdf.save('dashed-line-chart.pdf');
-     } else {
-       console.error("No se pudo obtener la URI de la imagen de la gráfica.");
-     }
-   }).catch(error => console.error("Error al exportar la gráfica a PDF", error));
- }
+  exportToPDF(): void {
+    Promise.all([
+      this.chart?.dataURI(),
+      this.chart2?.dataURI()
+    ]).then((dataURIs) => {
+      const pdf = new jsPDF();
+      pdf.setFontSize(16);
+      pdf.text('Reporte de Solvencia', 20, 20);
+      
+      // Asegurarse de que dataURIs[0] tiene imgURI
+      const firstChart = dataURIs[0] as { imgURI?: string; blob?: Blob };
+      if (firstChart.imgURI) {
+        pdf.addImage(firstChart.imgURI, 'PNG', 15, 25, 180, 80);
+      }
   
-
+      // Asegurarse de que dataURIs[1] tiene imgURI
+      const secondChart = dataURIs[1] as { imgURI?: string; blob?: Blob };
+      if (secondChart.imgURI) {
+        pdf.addPage();
+        pdf.addImage(secondChart.imgURI, 'PNG', 15, 25, 180, 80);
+      }
+  
+      pdf.save('reporte-solvencia.pdf');
+    }).catch(error => console.error("Error al exportar los gráficos a PDF", error));
+  }
+  
 }
