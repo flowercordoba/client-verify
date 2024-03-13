@@ -1,19 +1,19 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { FinancieroRoutingModule } from './financiero-routing.module';
-import { FinancieroComponent } from './financiero.component';
+import { RPaisRoutingModule } from './r-pais-routing.module';
+import { RPaisComponent } from './r-pais.component';
 import { ChartModule } from 'src/app/components/chart/chart.module';
 
 
 @NgModule({
   declarations: [
-    FinancieroComponent
+    RPaisComponent
   ],
   imports: [
     CommonModule,
-    FinancieroRoutingModule,
+    RPaisRoutingModule,
     ChartModule
   ]
 })
-export class FinancieroModule { }
+export class RPaisModule { }

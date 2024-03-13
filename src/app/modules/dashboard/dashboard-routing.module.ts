@@ -13,7 +13,7 @@ const routes: Routes = [
     {path:'liquidez',loadChildren:()=>import('../liquidez/liquidez.module').then(m=>m.LiquidezModule)},
     {path:'solvencia',loadChildren:()=>import('../solvencia/solvencia.module').then(m=>m.SolvenciaModule)},
     {path:'rentabilidad',loadChildren:()=>import('../rentabilidad/rentabilidad.module').then(m=>m.RentabilidadModule)},
-    {path:'reporte',loadChildren:()=>import('../financiero/financiero.module').then(m=>m.FinancieroModule)},
+    {path:'riesgo-pais',loadChildren:()=>import('../r-pais/r-pais.module').then(m=>m.RPaisModule)},
 
   ]},
   

@@ -36,13 +36,23 @@ export class SolvenciaComponent {
  }
 
  actualizarGrafico(): void {
+  
     const { totalPasivo, totalActivo, pasivoCorriente, pasivoTotal, ventasNetas, patrimonio } = this.solvenciaForm.value;
 
     const nivelEndeudamiento = totalPasivo / totalActivo;
     const concentracionEndeudamientoCortoPlazo = pasivoCorriente / pasivoTotal;
     const endeudamientoVentas = pasivoTotal / ventasNetas;
     const multiplicadorCapital = totalActivo / patrimonio;
+
+    // 
+
+// Obligaciones financieras
+// Cuentas por pagar Comerciales y Otras cuentas por pagar
+// Impuesto sobre las Utilidades
+// Total pasivo corriente
     
+
+  
     const series = [
       {
         name: 'Nivel de Endeudamiento',
@@ -81,7 +91,7 @@ export class SolvenciaComponent {
        height: 350
      },
      xaxis: {
-       categories: ['2024', '2025', '2026', '2027', '2028'] 
+       categories: ['2024'] 
      },
      title: {
        text: 'ESTRUCTURA DE FINANCIAMIENTO', 
@@ -125,7 +135,7 @@ export class SolvenciaComponent {
       height: 350
     },
     xaxis: {
-      categories: ['2024', '2025', '2026', '2027', '2028'] 
+      categories: ['2024'] 
     },
     title: {
       text: 'ESTRUCTURA DE LOS PASIVOS', 

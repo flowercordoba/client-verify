@@ -103,7 +103,7 @@ export class LiquidezComponent  {
         const options2 = {
           series: series,
           chart: {
-            type: 'line',
+            type: 'bar',
             height: 350
           },
           xaxis: {
@@ -137,7 +137,6 @@ export class LiquidezComponent  {
           }
         };
     
-        // Renderizar la segunda gráfica (línea)
         if (this.chart2) {
           this.chart2.updateOptions(options2);
         } else {

@@ -10,11 +10,10 @@ import { SharedModule } from './shared/shared.module';
 import { ProfileToggleService } from './shared/services/profile-toggle.service';
 import { AuthInterceptor } from './core/guards/auth.interceptor';
 
+
 @NgModule({
   declarations: [
     AppComponent,
-
-
   ],
   imports: [
     BrowserModule,
