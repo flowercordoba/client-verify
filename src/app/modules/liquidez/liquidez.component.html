@@ -36,13 +36,6 @@
                 <input formControlName="pasivoCorriente" type="number" placeholder="Pasivo Corriente" class="form-input mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50">
             </div>
             <p>Cifras en Millones (COP)</p>
-
-<!--             
-            <div class="flex flex-col">
-                <label for="disponible" class="mb-2 font-semibold text-gray-700">Disponible (Prueba Acida):</label>
-                <input formControlName="disponible" type="number" placeholder="Disponible" class="form-input mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50">
-            </div> -->
-            
             <div class="flex flex-col">
                 <label for="inversionesTemporales" class="mb-2 font-semibold text-gray-700">Inversiones Temporales:</label>
                 <input formControlName="inversionesTemporales" type="number" placeholder="Inversiones Temporales" class="form-input mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50">
@@ -79,7 +72,7 @@
 
             <div class="p-5">
                 <div class="flex justify-between ">
-                    <h4 class="card-title mb-1">Grafica reporte Barra</h4>
+                    <h4 class="card-title mb-1">Grafica reporte Linea</h4>
                 </div>
     
                 <div id="chart2"></div>
@@ -87,6 +80,38 @@
               <button class="btn btn-sm bg-light !text-sm text-gray-800 "  (click)="exportToPDF()">Exportar a PDF</button>
     
               </div>
+              <div class="p-5">
+                <div class="flex justify-between">
+                  <h4 class="card-title mb-1">Resultados:</h4>
+                </div>
+                <div>
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Concepto</th>
+                        <th>Valor</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>Capital de Trabajo</td>
+                        <td>{{ capitalDeTrabajo | number:'1.2-2' }}</td>
+                      </tr>
+                      <tr>
+                        <td>Razón Corriente</td>
+                        <td>{{ razonCorriente | number:'1.2-2' }}</td>
+                      </tr>
+                      <tr>
+                        <td>Prueba Ácida</td>
+                        <td>{{ pruebaAcida | number:'1.2-2' }}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              
+              
+              
           
       </div> 
     

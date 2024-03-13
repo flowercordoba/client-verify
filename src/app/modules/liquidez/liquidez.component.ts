@@ -15,18 +15,18 @@ export class LiquidezComponent  {
   chart: ApexCharts | null = null;
   chart2: ApexCharts | null = null; // Segunda gráfica
 
-
+  capitalDeTrabajo: number = 0;
+  razonCorriente: number = 0;
+  pruebaAcida: number = 0;
   constructor(private fb: FormBuilder) {
     this.liquidezForm = this.fb.group({
       activoCorriente: [null, Validators.required],
       pasivoCorriente: [null, Validators.required],
-      disponible: [null, Validators.required], // Asumiendo que esto representa el efectivo disponible
-      inversionesTemporales: [null, Validators.required], // Asumiendo inversiones que pueden ser fácilmente convertidas en efectivo
-      deudores: [null, Validators.required], // Asumiendo esto como cuentas por cobrar
+      disponible: [null, Validators.required],
+      inversionesTemporales: [null, Validators.required],
+      deudores: [null, Validators.required],
     });
-    
   }
-
   ngOnInit(): void {
     this.liquidezForm.valueChanges.subscribe(() => {
       if (this.liquidezForm.valid) {
@@ -36,138 +36,125 @@ export class LiquidezComponent  {
   }
 
   actualizarGrafico(): void {
-    const { activoCorriente, pasivoCorriente, disponible, inversionesTemporales, deudores } = this.liquidezForm.value;
-
+    const { activoCorriente,capitalDeTrabajo, pasivoCorriente, disponible, inversionesTemporales, deudores } = this.liquidezForm.value;
+  
     // Cálculos de liquidez
-    const capitalDeTrabajo = activoCorriente - pasivoCorriente;
-    const razonCorriente = activoCorriente / pasivoCorriente;
-    const pruebaAcida = (disponible + inversionesTemporales + deudores) / pasivoCorriente;
-    
+    this.capitalDeTrabajo = activoCorriente - pasivoCorriente;
+    this.razonCorriente = activoCorriente / pasivoCorriente;
+    this.pruebaAcida = (disponible + inversionesTemporales + deudores) / pasivoCorriente;
 
-    const series= [
+    // Series para la primera gráfica (Barras)
+    const seriesBarras = [
       {
         name: 'Capital de Trabajo',
-        data: this.calcularProyeccion(capitalDeTrabajo, 5, 0.05)
-      },
-      {
-        name: 'Razón Corriente',
-        data: this.calcularProyeccion(razonCorriente, 5, 0.05)
-      },
-      {
-        name: 'Prueba Ácida',
-        data: this.calcularProyeccion(pruebaAcida, 5, 0.05)
+        data: [this.capitalDeTrabajo]
       },
       {
         name: 'Pasivo Corriente',
-        data: [pasivoCorriente] 
+        data: [pasivoCorriente]
       }
     ];
-    
-
-    const options = {
-      series: series,
+  
+    const seriesLineas = [
+      {
+        name: 'Razón Corriente',
+        data: [this.razonCorriente]
+      },
+      {
+        name: 'Prueba Ácida',
+        data: [this.pruebaAcida]
+      }
+    ];
+  
+    const optionsBarras = {
+      series: seriesBarras,
       chart: {
         type: 'bar',
         height: 350
       },
       xaxis: {
-        categories: ['2024', '2025', '2026', '2027', '2028'] 
+        categories: ['2024']
       },
       title: {
-        text: 'RAZON CORRIENTE & PRUEBA ACIDA', 
+        text: 'Capital de Trabajo y Pasivo Corriente',
         align: 'left', 
         style: {
-            fontSize: '10px',
-            fontWeight: 'bold',
-            color: '#263238'
+          fontSize: '10px',
+          fontWeight: 'bold',
+          color: '#263238'
         }
-    },
-    plotOptions: {
+      },
+      plotOptions: {
         bar: {
-            horizontal: false,
-            columnWidth: '45%',
-            endingShape: 'rounded'
+          horizontal: false,
+          columnWidth: '55%',
+          endingShape: 'rounded'
         },
-    },
-    dataLabels: {
+      },
+      dataLabels: {
         enabled: false
-    },
-    stroke: {
-        show: false,
+      },
+      stroke: {
+        show: true,
         width: 2,
         colors: ['transparent']
-    },
-        };
-
-
-        const options2 = {
-          series: series,
-          chart: {
-            type: 'bar',
-            height: 350
-          },
-          xaxis: {
-            categories: ['2024', '2025', '2026', '2027', '2028'] 
-          },
-          title: {
-            text: 'DISTRIBUCIÓN DEL ACTIVO CORRIENTE', 
-            align: 'left', 
-            style: {
-                fontSize: '10px',
-                fontWeight: 'bold',
-                color: '#263238'
-            }
-        },
-          stroke: {
-            curve: 'straight'
-          },
-          markers: {
-            size: 4
-          },
-          tooltip: {
-            shared: true,
-            intersect: false
-          },
-          legend: {
-            position: 'botton',
-            horizontalAlign: 'right',
-            floating: true,
-            offsetY: -25,
-            offsetX: -5
-          }
-        };
-    
-        if (this.chart2) {
-          this.chart2.updateOptions(options2);
-        } else {
-          this.chart2 = new ApexCharts(document.querySelector("#chart2"), options2);
-          this.chart2.render();
+      },
+    };
+  
+    const optionsLineas = {
+      series: seriesLineas,
+      chart: {
+        type: 'line',
+        height: 350
+      },
+      xaxis: {
+        categories: ['Actual']
+      },
+      title: {
+        text: 'Razón Corriente & Prueba Ácida', 
+        align: 'left', 
+        style: {
+          fontSize: '10px',
+          fontWeight: 'bold',
+          color: '#263238'
         }
-
-
-
-  // Para la primera gráfica (Gráfica de barras)
-if (this.chart) {
-  this.chart.updateOptions(options);
-} else {
-  this.chart = new ApexCharts(document.querySelector("#chart"), options);
-  this.chart.render();
-}
-
-
-
-  }
-
-  calcularProyeccion(valorInicial: number, anos: number, tasaIncremento: number): number[] {
-    let valorActual = valorInicial;
-    const proyeccion = [valorActual]; // Incluye el valor inicial en la proyección
-
-    for (let i = 1; i < anos; i++) { // Comienza en 1 porque ya incluimos el año inicial
-      valorActual *= (1 + tasaIncremento); // Incremento del 5% anual
-      proyeccion.push(valorActual);
+      },
+      stroke: {
+        curve: 'straight',
+        width: 3
+      },
+      markers: {
+        size: 4
+      },
+      tooltip: {
+        shared: true,
+        intersect: false
+      },
+      legend: {
+        position: 'bottom',
+        horizontalAlign: 'right',
+        floating: true,
+        offsetY: -25,
+        offsetX: -5
+      }
+    };
+  
+    if (this.chart) {
+      this.chart.updateOptions(optionsBarras);
+    } else {
+      this.chart = new ApexCharts(document.querySelector("#chart"), optionsBarras);
+      this.chart.render();
     }
-    return proyeccion;
+  
+    // Crear o actualizar la segunda gráfica (Líneas)
+    if (this.chart2) {
+      this.chart2.updateOptions(optionsLineas);
+    } else {
+      this.chart2 = new ApexCharts(document.querySelector("#chart2"), optionsLineas);
+      this.chart2.render();
+    }
   }
+  
 
   exportToPDF() {
     this.chart.dataURI().then((data: { imgURI?: string, blob?: Blob }) => {
