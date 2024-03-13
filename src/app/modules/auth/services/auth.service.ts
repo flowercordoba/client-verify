@@ -37,7 +37,7 @@ export class AuthService {
     password: string;
   }): Observable<UserModel> {
     return this.http
-      .post<UserModel>(`${this.base_url}/auth/login`, data, {
+      .post<UserModel>(`http://localhost:3000/api/auth/login`, data, {
         withCredentials: true,
       })
       .pipe(
