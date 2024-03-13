@@ -29,100 +29,44 @@
                     </div>
 
                     <form [formGroup]="gestionForm" (ngSubmit)="actualizarGrafico()" class="space-y-4 bg-white p-6 rounded-lg shadow-md">
-                        <!-- Total Pasivo -->
-                        <div class="flex flex-col">
-                            <label for="totalPasivo" class="mb-2 font-semibold text-gray-700">Total Pasivo:</label>
-                            <input formControlName="totalPasivo" type="number" placeholder="Total Pasivo" class="form-input mt-1 block w-full rounded-md border-gray-300 shadow-sm">
-                        </div>
-                        <p>Cifras en Millones (COP)</p>
-
-                    
-                        <!-- Total Activo -->
-                        <div class="flex flex-col">
-                            <label for="totalActivo" class="mb-2 font-semibold text-gray-700">Total Activo:</label>
-                            <input formControlName="totalActivo" type="number" placeholder="Total Activo" class="form-input mt-1 block w-full rounded-md border-gray-300 shadow-sm">
-                        </div>
-                        <p>Cifras en Millones (COP)</p>
-
-                    
-                        <!-- Pasivo Corriente -->
-                        <div class="flex flex-col">
-                            <label for="pasivoCorriente" class="mb-2 font-semibold text-gray-700">Pasivo Corriente:</label>
-                            <input formControlName="pasivoCorriente" type="number" placeholder="Pasivo Corriente" class="form-input mt-1 block w-full rounded-md border-gray-300 shadow-sm">
-                        </div>
-
-                        <p>Cifras en Millones (COP)</p>
-
-                        <!-- Pasivo Total -->
-                        <div class="flex flex-col">
-                            <label for="pasivoTotal" class="mb-2 font-semibold text-gray-700">Pasivo Total:</label>
-                            <input formControlName="pasivoTotal" type="number" placeholder="Pasivo Total" class="form-input mt-1 block w-full rounded-md border-gray-300 shadow-sm">
-                        </div>
-                        <p>Cifras en Millones (COP)</p>
-
-                    
                         <!-- Ventas Netas -->
                         <div class="flex flex-col">
-                            <label for="ventasNetas" class="mb-2 font-semibold text-gray-700">Ventas Netas:</label>
-                            <input formControlName="ventasNetas" type="number" placeholder="Ventas Netas" class="form-input mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+                          <label for="ventasNetas" class="mb-2 font-semibold text-gray-700">Ventas Netas:</label>
+                          <input formControlName="ventasNetas" type="number" placeholder="Ventas Netas" class="form-input mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+                          <p>Cifras en Millones (COP)</p>
                         </div>
-                        <p>Cifras en Millones (COP)</p>
-
-                    
-                        <!-- Patrimonio -->
-                        <div class="flex flex-col">
-                            <label for="patrimonio" class="mb-2 font-semibold text-gray-700">Patrimonio:</label>
-                            <input formControlName="patrimonio" type="number" placeholder="Patrimonio" class="form-input mt-1 block w-full rounded-md border-gray-300 shadow-sm">
-                        </div>
-                        <p>Cifras en Millones (COP)</p>
-
-                    
-                        <!-- Activo Corriente -->
-                        <div class="flex flex-col">
-                            <label for="activoCorriente" class="mb-2 font-semibold text-gray-700">Activo Corriente:</label>
-                            <input formControlName="activoCorriente" type="number" placeholder="Activo Corriente" class="form-input mt-1 block w-full rounded-md border-gray-300 shadow-sm">
-                        </div>
-
-                        <p>Cifras en Millones (COP)</p>
-
-                    
+                      
                         <!-- Cuentas por Cobrar Clientes -->
                         <div class="flex flex-col">
-                            <label for="cuentasPorCobrarClientes" class="mb-2 font-semibold text-gray-700">Cuentas por Cobrar Clientes:</label>
-                            <input formControlName="cuentasPorCobrarClientes" type="number" placeholder="Cuentas por Cobrar Clientes" class="form-input mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+                          <label for="cuentasPorCobrar" class="mb-2 font-semibold text-gray-700">Cuentas por Cobrar Clientes:</label>
+                          <input formControlName="cuentasPorCobrar" type="number" placeholder="Cuentas por Cobrar Clientes" class="form-input mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+                          <p>Cifras en Millones (COP)</p>
                         </div>
-
-                        <p>Cifras en Millones (COP)</p>
-
-                    
+                      
                         <!-- Costo de Venta -->
                         <div class="flex flex-col">
-                            <label for="costoDeVenta" class="mb-2 font-semibold text-gray-700">Costo de Venta:</label>
-                            <input formControlName="costoDeVenta" type="number" placeholder="Costo de Venta" class="form-input mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+                          <label for="costoDeVenta" class="mb-2 font-semibold text-gray-700">Costo de Venta:</label>
+                          <input formControlName="costoDeVenta" type="number" placeholder="Costo de Venta" class="form-input mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+                          <p>Cifras en Millones (COP)</p>
                         </div>
-
-                        <p>Cifras en Millones (COP)</p>
-
-                    
-                        <!-- Inventario -->
-                        <!-- <div class="flex flex-col">
-                            <label for="inventario" class="mb-2 font-semibold text-gray-700">Inventario:</label>
-                            <input formControlName="inventario" type="number" placeholder="Inventario" class="form-input mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+                      
+                        <!-- Inventarios -->
+                        <div class="flex flex-col">
+                          <label for="inventarios" class="mb-2 font-semibold text-gray-700">Inventarios:</label>
+                          <input formControlName="inventarios" type="number" placeholder="Inventarios" class="form-input mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+                          <p>Cifras en Millones (COP)</p>
                         </div>
-                        <p>Cifras en Millones (COP)</p> -->
-
-                    
+                      
                         <!-- Cuentas por Pagar -->
                         <div class="flex flex-col">
-                            <label for="cuentasPorPagar" class="mb-2 font-semibold text-gray-700">Cuentas por Pagar:</label>
-                            <input formControlName="cuentasPorPagar" type="number" placeholder="Cuentas por Pagar" class="form-input mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+                          <label for="cuentasPorPagar" class="mb-2 font-semibold text-gray-700">Cuentas por Pagar:</label>
+                          <input formControlName="cuentasPorPagar" type="number" placeholder="Cuentas por Pagar" class="form-input mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+                          <p>Cifras en Millones (COP)</p>
                         </div>
-                        <p>Cifras en Millones (COP)</p>
-
-                    
+                      
                         <button type="submit" class="w-full text-white bg-blue-500 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Actualizar gráfico</button>
-                    </form>
-                    
+                      </form>
+                      
                     
                       
                 </div>

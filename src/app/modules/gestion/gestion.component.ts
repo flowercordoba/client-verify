@@ -19,16 +19,10 @@ export class GestionComponent {
 
  ngOnInit(): void {
   this.gestionForm = this.fb.group({
-    totalPasivo: [null, Validators.required],
-    totalActivo: [null, Validators.required],
-    pasivoCorriente: [null, Validators.required],
-    pasivoTotal: [null, Validators.required],
     ventasNetas: [null, Validators.required],
-    patrimonio: [null, Validators.required],
-    activoCorriente: [null, Validators.required],
-    cuentasPorCobrarClientes: [null, Validators.required],
+    cuentasPorCobrar: [null, Validators.required],
     costoDeVenta: [null, Validators.required],
-    inventario: [null, Validators.required],
+    inventarios: [null, Validators.required],
     cuentasPorPagar: [null, Validators.required]
   });
 }
@@ -45,89 +39,101 @@ export class GestionComponent {
       
  }
 
-
-
  actualizarGrafico(): void {
-    const { totalPasivo, totalActivo, pasivoCorriente, pasivoTotal, ventasNetas, patrimonio } = this.gestionForm.value;
+  const { ventasNetas, cuentasPorCobrar, costoDeVenta, inventarios, cuentasPorPagar } = this.gestionForm.value;
 
-    const nivelEndeudamiento = totalPasivo / totalActivo;
-    const concentracionEndeudamientoCortoPlazo = pasivoCorriente / pasivoTotal;
-    const endeudamientoVentas = pasivoTotal / ventasNetas;
-    const multiplicadorCapital = totalActivo / patrimonio;
-    
-    const series = [
-      {
-        name: 'Nivel de Endeudamiento',
-        data: this.calcularProyeccion(nivelEndeudamiento, 5, 0.05)
-      },
-      {
-        name: 'Concentración Endeudamiento Corto Plazo',
-        data: this.calcularProyeccion(concentracionEndeudamientoCortoPlazo, 5, 0.05)
-      },
-      {
-        name: 'Endeudamiento / Ventas',
-        data: this.calcularProyeccion(endeudamientoVentas, 5, 0.05)
-      },
-      {
-        name: 'Multiplicador de Capital',
-        data: this.calcularProyeccion(multiplicadorCapital, 5, 0.05)
+  const diasEnElAno = 365;
+
+ // Cálculos para los datos de cada año, con redondeo a tres decimales
+ const periodoDeCobro = parseFloat((diasEnElAno * (cuentasPorCobrar / ventasNetas)).toFixed(3));
+ const periodoDeInventario = parseFloat((diasEnElAno * (inventarios / costoDeVenta)).toFixed(3));
+ const periodoDePago = parseFloat((diasEnElAno * (cuentasPorPagar / costoDeVenta)).toFixed(3));
+
+
+  // Suponiendo que los valores calculados no cambian durante el periodo proyectado
+  const dataPeriodoDeCobro = Array(5).fill(periodoDeCobro);
+  const dataPeriodoDeInventario = Array(5).fill(periodoDeInventario);
+  const dataPeriodoDePago = Array(5).fill(periodoDePago);
+
+  const series = [
+    {
+      name: 'Periodo de Cobro (días)',
+      data: dataPeriodoDeCobro
+    },
+    {
+      name: 'Periodo de Inventario (días)',
+      data: dataPeriodoDeInventario
+    },
+    {
+      name: 'Periodo de Pago (días)',
+      data: dataPeriodoDePago
+    }
+  ];
+
+  const options = {
+    series: series,
+    chart: {
+      type: 'line',
+      height: 350
+    },
+    xaxis: {
+      type: 'category',
+      categories: ['2024', '2025', '2026', '2027', '2028'],
+      title: {
+        text: 'Año',
+        style: {
+          fontSize: '12px',
+          fontWeight: 'bold',
+          color: '#263238'
+        }
       }
-    ];
-    
+    },
+    yaxis: {
+      title: {
+        text: 'Días',
+        style: {
+          fontSize: '12px',
+          fontWeight: 'bold',
+          color: '#263238'
+        }
+      }
+    },
+    title: {
+      text: 'Análisis de Periodo de Cobro, Inventario y Pago',
+      align: 'left',
+      style: {
+        fontSize: '14px',
+        fontWeight: 'bold',
+        color: '#263238'
+      }
+    },
+    stroke: {
+      curve: 'straight',
+      width: 3
+    },
+    markers: {
+      size: 5
+    },
+    tooltip: {
+      x: {
+        format: 'yyyy'
+      }
+    },
+    dataLabels: {
+      enabled: false
+    }
+  };
 
-   const options = {
-     series: series,
-     chart: {
-       type: 'bar',
-       height: 350
-     },
-     xaxis: {
-       categories: ['2024', '2025', '2026', '2027', '2028'] 
-     },
-     title: {
-       text: 'Margen bruto, Margen operativo y Margen neto', 
-       align: 'left', 
-       style: {
-           fontSize: '10px',
-           fontWeight: 'bold',
-           color: '#263238'
-       }
-   },
-   plotOptions: {
-       bar: {
-           horizontal: false,
-           columnWidth: '45%',
-           endingShape: 'rounded'
-       },
-   },
-   dataLabels: {
-       enabled: false
-   },
-   stroke: {
-       show: false,
-       width: 2,
-       colors: ['transparent']
-   },
-       };
+  if (this.chart) {
+    this.chart.updateOptions(options);
+  } else {
+    this.chart = new ApexCharts(document.querySelector("#chart"), options);
+    this.chart.render();
+  }
+}
 
-   if (this.chart) {
-     this.chart.updateOptions({ series: series });
-   } else {
-     this.chart = new ApexCharts(document.querySelector("#chart"), options);
-     this.chart.render();
-   }
- }
 
- calcularProyeccion(valorInicial: number, anos: number, tasaIncremento: number): number[] {
-   let valorActual = valorInicial;
-   const proyeccion = [valorActual]; // Incluye el valor inicial en la proyección
 
-   for (let i = 1; i < anos; i++) { // Comienza en 1 porque ya incluimos el año inicial
-     valorActual *= (1 + tasaIncremento); // Incremento del 5% anual
-     proyeccion.push(valorActual);
-   }
-   return proyeccion;
- }
 
  exportToPDF() {
    this.chart.dataURI().then((data: { imgURI?: string, blob?: Blob }) => {
