@@ -70,26 +70,26 @@ export class AuthService {
 //     );
 // }
 
-validarToken(): Observable<boolean> {
-  const token = this.getToken();
-  if (!token) {
-    return of(false);
-  }
+// validarToken(): Observable<boolean> {
+//   const token = this.getToken();
+//   if (!token) {
+//     return of(false);
+//   }
 
-  return this.http.get<IUser>(`${this.base_url}/auth/current`, { withCredentials: true })
-    .pipe(
-      tap((user) => {
-        console.log(user);
-        this.usuarioSubject.next(user);  
-      }),
-      map(user => !!user),
-      catchError((error) => {
-        console.error("Error validando el token mediante /current", error);
-        this.logout();
-        return of(false);
-      })
-    );
-}
+//   return this.http.get<IUser>(`${this.base_url}/auth/current`, { withCredentials: true })
+//     .pipe(
+//       tap((user) => {
+//         console.log(user);
+//         this.usuarioSubject.next(user);  
+//       }),
+//       map(user => !!user),
+//       catchError((error) => {
+//         console.error("Error validando el token mediante /current", error);
+//         this.logout();
+//         return of(false);
+//       })
+//     );
+// }
 
 
   guardarLocalStorage(token: string): void {
@@ -123,15 +123,15 @@ validarToken(): Observable<boolean> {
   // }
 
   // authService.ts
-  logout(): void {
-    this.http.post(`${this.base_url}/auth/signout`, {}, { withCredentials: true }).subscribe({
-      next: () => {
-        localStorage.removeItem('token'); // Asumiendo que el token se guarda bajo la clave 'token'
-        this.router.navigate(['/auth/login']); // Redirige al usuario a la página de inicio de sesión
-      },
-      error: (error) => {
-        console.error('Error during logout', error);
-      }
-    });
-  }
+  // logout(): void {
+  //   this.http.post(`${this.base_url}/auth/signout`, {}, { withCredentials: true }).subscribe({
+  //     next: () => {
+  //       localStorage.removeItem('token'); // Asumiendo que el token se guarda bajo la clave 'token'
+  //       this.router.navigate(['/auth/login']); // Redirige al usuario a la página de inicio de sesión
+  //     },
+  //     error: (error) => {
+  //       console.error('Error during logout', error);
+  //     }
+  //   });
+  // }
 }

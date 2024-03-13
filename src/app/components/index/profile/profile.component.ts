@@ -13,14 +13,14 @@ export class ProfileComponent {
   constructor(private authService: AuthService) {}
 
   ngOnInit(): void {
-    this.authService.validarToken().subscribe({
-      next: (isValid: boolean) => {
-        if (!isValid) {
-        }
-      },
-      error: (error: any) => {
-        console.error("Hubo un error al obtener la información del usuario", error);
-      }
-    });
+    // this.authService.validarToken().subscribe({
+    //   next: (isValid: boolean) => {
+    //     if (!isValid) {
+    //     }
+    //   },
+    //   error: (error: any) => {
+    //     console.error("Hubo un error al obtener la información del usuario", error);
+    //   }
+    // });
   }
 }
