@@ -15,7 +15,7 @@ export class RegisterComponent {
   public formSubmitted = false;
 
   public registerForm: FormGroup = this.fb.group({
-    nombre: ['', [Validators.required, Validators.minLength(4)]],
+    name: ['', [Validators.required, Validators.minLength(4)]],
     password: ['', [Validators.required, Validators.minLength(6)]],
     repassword: ['', [Validators.required, Validators.minLength(6)]],
     email: ['', [Validators.required, Validators.email]],
@@ -42,7 +42,7 @@ registerUser() {
   }
 
   const formData: IResgisterForm = {
-    nombre: this.registerForm.get('nombre')!.value,
+    name: this.registerForm.get('name')!.value,
     password: this.registerForm.get('password')!.value,
     email: this.registerForm.get('email')!.value,
   };

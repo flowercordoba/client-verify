@@ -23,7 +23,7 @@ export class AuthService {
 
   signup(data: IResgisterForm): Observable<UserModel> {
     return this.http
-      .post<UserModel>('http://localhost:3000/api/usuarios/register', data, {
+      .post<UserModel>('https://api-server-pnb4.onrender.com/api/auth/register', data, {
         withCredentials: true,
       })
       .pipe(
@@ -37,7 +37,7 @@ export class AuthService {
     password: string;
   }): Observable<UserModel> {
     return this.http
-      .post<UserModel>(`http://localhost:3000/api/auth/login`, data, {
+      .post<UserModel>(`https://api-server-pnb4.onrender.com/api/auth/login`, data, {
         withCredentials: true,
       })
       .pipe(

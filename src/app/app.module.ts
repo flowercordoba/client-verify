@@ -9,6 +9,8 @@ import { AuthModule } from './modules/auth/auth.module';
 import { SharedModule } from './shared/shared.module';
 import { ProfileToggleService } from './shared/services/profile-toggle.service';
 import { AuthInterceptor } from './core/guards/auth.interceptor';
+import { HttpConfigInterceptor } from './core/interceptors/http-config.interceptor';
+import { AuthTokenInterceptor } from './core/interceptors/auth-token.interceptor';
 
 
 @NgModule({
@@ -25,11 +27,9 @@ import { AuthInterceptor } from './core/guards/auth.interceptor';
   ],
   providers: [
     ProfileToggleService,
-    {
-      provide: HTTP_INTERCEPTORS, 
-      useClass: AuthInterceptor,
-      multi: true, 
-    },
+    {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor,multi: true, },
+    { provide: HTTP_INTERCEPTORS, useClass: HttpConfigInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: AuthTokenInterceptor, multi: true },
   ], 
   bootstrap: [AppComponent]
 })

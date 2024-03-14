@@ -1,5 +1,5 @@
 export interface IResgisterForm {
-  nombre: string;
+  name: string;
   email: string;
   password: string;
  

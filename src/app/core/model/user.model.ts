@@ -2,7 +2,7 @@
 
 export class UserModel {
   id?: string;
-  nombre: string;
+  name: string;
   email: string;
   token:string 
   emailValidated?: boolean;
@@ -12,7 +12,7 @@ export class UserModel {
 
   constructor({
     id = '',
-    nombre,
+    name,
     email,
     emailValidated = false,
     password = '',
@@ -21,7 +21,7 @@ export class UserModel {
     role = ['USER_ROLE'],
   }: {
     id?: string;
-    nombre: string;
+    name: string;
     token: string;
     email: string;
     emailValidated?: boolean;
@@ -30,7 +30,7 @@ export class UserModel {
     role?: string[];
   }) {
     this.id = id;
-    this.nombre = nombre;
+    this.name = name;
     this.token = token;
     this.email = email;
     this.emailValidated = emailValidated;
