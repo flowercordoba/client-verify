@@ -1,12 +1,11 @@
 <main class="p-6">
 
-  <div class="grid xl:grid-cols-4 md:grid-cols-2 gap-6 mb-6">
+  <!-- <div class="grid xl:grid-cols-4 md:grid-cols-2 gap-6 mb-6">
       <div class="card">
-          <!-- card -->
           <div class="p-5 flex items-center justify-between">
               <span>
                   <span class="text-slate-400 font-semibold block">Total Solvencias</span>
-                  <!-- <span class="text-xl font-semibold">{{ totalGestiones }}</span>  -->
+                  <span class="text-xl font-semibold">{{ totalGestiones }}</span> 
               </span>
 
               <span
@@ -16,7 +15,7 @@
           </div>
 
       </div>
-  </div>
+  </div> -->
   <div class="grid lg:grid-cols-2 gap-6 mb-6">
     <div class="grid ">
       <div class="">
@@ -32,6 +31,12 @@
                 <input formControlName="totalActivo" type="number" placeholder="Total Activo" required class="form-input mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50">
             </div>
             <p>Cifras en Millones (COP)</p>
+
+            <div class="flex flex-col">
+                <label for="totalPasivo" class="mb-2 font-semibold text-gray-700">Total Pasivo:</label>
+                <input formControlName="totalPasivo" type="number" placeholder="Total Pasivo" required class="form-input mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50">
+              </div>
+              <p>Cifras en Millones (COP)</p>
 
         
             <div class="flex flex-col">
@@ -62,7 +67,7 @@
             <p>Cifras en Millones (COP)</p>
 
         
-            <button type="submit" class="w-full text-white bg-blue-500 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Actualizar gráfico</button>
+            <button type="submit" class="w-full text-white bg-blue-500 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Guardar Reporte</button>
         </form>
         
         
@@ -73,20 +78,13 @@
       <div class="card">
           <div class="p-5">
               <div class="flex justify-between ">
-                  <h4 class="card-title mb-1">Grafica reporte</h4>
+                <h4 class="card-title mb-1">Resultados grafica</h4>
               </div>
-
               <div id="chart"></div>
-              <button class="btn btn-sm bg-light !text-sm text-gray-800 "  (click)="exportToPDF()">Exportar a PDF</button>
-
             </div>
 
             
             <div class="p-5">
-                <div class="flex justify-between ">
-                    <h4 class="card-title mb-1">Grafica reporte Barra</h4>
-                </div>
-    
                 <div id="chart2"></div>
                
               <button class="btn btn-sm bg-light !text-sm text-gray-800 "  (click)="exportToPDF()">Exportar a PDF</button>
@@ -97,8 +95,7 @@
                 <div class="flex justify-between ">
                   <h4 class="card-title mb-1">Resultados:</h4>
                 </div>
-                <!-- Mostrar los resultados aquí -->
-                <p>Nivel de Endeudamiento: {{ nivelEndeudamiento | number:'1.2-2' }}</p>
+                <p>Nivel endeudamientoPatrimonio: {{ endeudamientoPatrimonio | number:'1.2-2' }}</p>
                 <p>Concentración de Endeudamiento Corto Plazo: {{ concentracionEndeudamientoCortoPlazo | number:'1.2-2' }}</p>
                 <p>Endeudamiento sobre Ventas: {{ endeudamientoVentas | number:'1.2-2' }}</p>
                 <p>Multiplicador de Capital: {{ multiplicadorCapital | number:'1.2-2' }}</p>
@@ -109,14 +106,5 @@
       </div>  
   </div>
 
-  <div class="grid xl:grid-cols-2 gap-6">
-      <div class="card overflow-hidden">
-          <div class="card-header flex justify-between items-center">
-              <h4 class="card-title">Total de Reportes</h4>
-              <a  class="btn btn-sm bg-light !text-sm text-gray-800 ">Exportar</a>
-          </div>
-          
-      </div> 
-  </div>
 
 </main>

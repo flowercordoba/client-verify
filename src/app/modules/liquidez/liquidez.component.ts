@@ -108,8 +108,16 @@ export class LiquidezComponent  {
         height: 350
       },
       xaxis: {
-        categories: ['Actual']
+        categories: ['2024']
       },
+      yaxis: {
+        labels: {
+          formatter: function (value) {
+            return value.toFixed(2); // Redondea el valor a 2 decimales
+          }
+        }
+      },
+      
       title: {
         text: 'Razón Corriente & Prueba Ácida', 
         align: 'left', 
@@ -128,7 +136,12 @@ export class LiquidezComponent  {
       },
       tooltip: {
         shared: true,
-        intersect: false
+        intersect: false,
+        y: {
+          formatter: function (value) {
+            return value.toFixed(2); // Redondea el valor a 2 decimales en el tooltip
+          }
+        }
       },
       legend: {
         position: 'bottom',
