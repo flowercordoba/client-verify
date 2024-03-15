@@ -27,6 +27,8 @@ export class LoginComponent {
 
 
   onLogin(): void {
+    console.log("Intentando iniciar sesión");
+
     if (this.loginForm.invalid) {
       Swal.fire({
         icon: 'error',

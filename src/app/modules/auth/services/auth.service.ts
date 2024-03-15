@@ -50,46 +50,33 @@ export class AuthService {
 
 
 
-// validarToken(): Observable<boolean> {
-//   const token = this.getToken();
-//   if (!token) {
-//     return of(false);
-//   }
-
-//   return this.http.get<UserModel>(`${this.base_url}/auth/current`, { withCredentials: true })
-//     .pipe(
-//       tap((user) => {
-//         console.log(user); 
-//       }),
-//       map(user => !!user),
-//       catchError((error) => {
-//         console.error("Error validando el token mediante /current", error);
-//         this.logout();
-//         return of(false);
-//       })
-//     );
-// }
-
-// validarToken(): Observable<boolean> {
-//   const token = this.getToken();
-//   if (!token) {
-//     return of(false);
-//   }
-
-//   return this.http.get<IUser>(`${this.base_url}/auth/current`, { withCredentials: true })
-//     .pipe(
-//       tap((user) => {
-//         console.log(user);
-//         this.usuarioSubject.next(user);  
-//       }),
-//       map(user => !!user),
-//       catchError((error) => {
-//         console.error("Error validando el token mediante /current", error);
-//         this.logout();
-//         return of(false);
-//       })
-//     );
-// }
+  validarToken(): Observable<boolean> {
+    const token = this.getToken();
+    if (!token) {
+      return of(false);
+    }
+  
+    return this.http.get<IUser>(`${this.base_url}/auth/current`, { withCredentials: true })
+      .pipe(
+        tap((user) => {
+          console.log(user);
+          this.usuarioSubject.next(user);  
+        }),
+        map(user => !!user),
+        catchError((error) => {
+          console.error("Error validando el token mediante /current", error);
+          this.logout();
+          return of(false);
+        })
+      );
+  }
+  
+  logout(): void {
+    localStorage.removeItem('token'); // Limpia el token del localStorage
+    this.usuarioSubject.next(null); // Opcionalmente, limpia el usuario actual
+    this.router.navigateByUrl('/login'); // Redirige al usuario a la página de inicio de sesión
+  }
+  
 
 
   guardarLocalStorage(token: string): void {
