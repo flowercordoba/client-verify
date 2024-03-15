@@ -50,7 +50,7 @@
             <p>Valor numerico</p>
 
             
-            <button type="submit" class="w-full text-white bg-blue-500 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Actualizar gráfico</button>
+            <button type="submit" class="w-full text-white bg-blue-500 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Guardar reporte</button>
         </form>
 
       </div>
@@ -60,12 +60,10 @@
       <div class="card">
           <div class="p-5">
               <div class="flex justify-between ">
-                  <h4 class="card-title mb-1">Grafica reporte Barra</h4>
               </div>
 
               <div id="chart"></div>
              
-            <button class="btn btn-sm bg-light !text-sm text-gray-800 "  (click)="exportToPDF()">Exportar a PDF</button>
 
             </div>
 
@@ -105,6 +103,11 @@
                         <td>Prueba Ácida</td>
                         <td>{{ pruebaAcida | number:'1.2-2' }}</td>
                       </tr>
+                      <tr>
+                        <td>Disponible</td>
+                        <td>{{ liquidezForm.get('disponible').value | number:'1.2-2' }}</td>
+                      </tr>
+                      
                     </tbody>
                   </table>
                 </div>
@@ -118,7 +121,7 @@
       
 
   </div>
-
+<!-- 
   <div class="grid xl:grid-cols-2 gap-6">
       <div class="card overflow-hidden">
           <div class="card-header flex justify-between items-center">
@@ -128,6 +131,6 @@
 
           
       </div> 
-  </div>
+  </div> -->
 
 </main>

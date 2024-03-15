@@ -36,14 +36,20 @@ export class LiquidezComponent  {
   }
 
   actualizarGrafico(): void {
-    const { activoCorriente,capitalDeTrabajo, pasivoCorriente, disponible, inversionesTemporales, deudores } = this.liquidezForm.value;
+    const { activoCorriente, pasivoCorriente, disponible, inversionesTemporales, deudores } = this.liquidezForm.value;
+  
+    const activoCorrienteNum = Number(activoCorriente);
+    const pasivoCorrienteNum = Number(pasivoCorriente);
+    const disponibleNum = Number(disponible);
+    const inversionesTemporalesNum = Number(inversionesTemporales);
+    const deudoresNum = Number(deudores);
   
     // Cálculos de liquidez
-    this.capitalDeTrabajo = activoCorriente - pasivoCorriente;
-    this.razonCorriente = activoCorriente / pasivoCorriente;
-    this.pruebaAcida = (disponible + inversionesTemporales + deudores) / pasivoCorriente;
-
-    // Series para la primera gráfica (Barras)
+    this.capitalDeTrabajo = activoCorrienteNum - pasivoCorrienteNum;
+    this.razonCorriente = activoCorrienteNum / pasivoCorrienteNum;
+    this.pruebaAcida = (disponibleNum + inversionesTemporalesNum + deudoresNum) / pasivoCorrienteNum;
+  
+    // Preparación de las series para los gráficos
     const seriesBarras = [
       {
         name: 'Capital de Trabajo',
@@ -51,7 +57,7 @@ export class LiquidezComponent  {
       },
       {
         name: 'Pasivo Corriente',
-        data: [pasivoCorriente]
+        data: [pasivoCorrienteNum]
       }
     ];
   
@@ -63,9 +69,11 @@ export class LiquidezComponent  {
       {
         name: 'Prueba Ácida',
         data: [this.pruebaAcida]
-      }
+      },
+     
     ];
   
+    // Opciones para la gráfica de barras
     const optionsBarras = {
       series: seriesBarras,
       chart: {
@@ -77,7 +85,7 @@ export class LiquidezComponent  {
       },
       title: {
         text: 'Capital de Trabajo y Pasivo Corriente',
-        align: 'left', 
+        align: 'left',
         style: {
           fontSize: '10px',
           fontWeight: 'bold',
@@ -101,6 +109,7 @@ export class LiquidezComponent  {
       },
     };
   
+    // Opciones para la gráfica de líneas
     const optionsLineas = {
       series: seriesLineas,
       chart: {
@@ -117,10 +126,9 @@ export class LiquidezComponent  {
           }
         }
       },
-      
       title: {
-        text: 'Razón Corriente & Prueba Ácida', 
-        align: 'left', 
+        text: 'Razón Corriente & Prueba Ácida',
+        align: 'left',
         style: {
           fontSize: '10px',
           fontWeight: 'bold',
@@ -152,6 +160,7 @@ export class LiquidezComponent  {
       }
     };
   
+    // Renderizar o actualizar la primera gráfica (Barras)
     if (this.chart) {
       this.chart.updateOptions(optionsBarras);
     } else {
@@ -159,7 +168,7 @@ export class LiquidezComponent  {
       this.chart.render();
     }
   
-    // Crear o actualizar la segunda gráfica (Líneas)
+    // Renderizar o actualizar la segunda gráfica (Líneas)
     if (this.chart2) {
       this.chart2.updateOptions(optionsLineas);
     } else {
@@ -169,22 +178,43 @@ export class LiquidezComponent  {
   }
   
 
-  exportToPDF() {
-    this.chart.dataURI().then((data: { imgURI?: string, blob?: Blob }) => {
-      if (data.imgURI) {
-        const pdf = new jsPDF();
-        // Título de la gráfica
-        pdf.setFontSize(16);
-        pdf.text('Grafica', 20, 20);
-        // Añade la gráfica al PDF
-        pdf.addImage(data.imgURI, 'PNG', 15, 20, 180, 150);
-
-        // pdf.addImage(data.imgURI, 'PNG', 10, 30, 180, 100); // Ajusta según necesidades
-        pdf.save('dashed-line-chart.pdf');
-      } else {
-        console.error("No se pudo obtener la URI de la imagen de la gráfica.");
+  exportToPDF(): void {
+    Promise.all([
+      this.chart?.dataURI(),
+      this.chart2?.dataURI()
+    ]).then((dataURIs) => {
+      const pdf = new jsPDF();
+      pdf.setFontSize(16);
+      pdf.text('Reporte de Liquidez', 20, 20);
+  
+      // Añade el primer gráfico al PDF
+      const firstChart = dataURIs[0] as { imgURI: string; blob?: Blob };
+      if (firstChart.imgURI) {
+        pdf.addImage(firstChart.imgURI, 'PNG', 15, 30, 180, 80);
       }
-    }).catch(error => console.error("Error al exportar la gráfica a PDF", error));
+  
+      // Añade resultados después del primer gráfico
+      pdf.setFontSize(12);
+      pdf.text(`Capital de Trabajo: ${this.capitalDeTrabajo.toFixed(2)}`, 20, 120);
+      pdf.text(`Razón Corriente: ${this.razonCorriente.toFixed(2)}`, 20, 130);
+      pdf.text(`Prueba Ácida: ${this.pruebaAcida.toFixed(2)}`, 20, 140);
+  
+      // Verifica si hay un segundo gráfico para añadir
+      const secondChart = dataURIs[1] as { imgURI: string; blob?: Blob };
+      if (secondChart?.imgURI) {
+        pdf.addPage();
+        pdf.setFontSize(16);
+        pdf.text('Reporte de Liquidez - Continuación', 20, 20);
+        pdf.addImage(secondChart.imgURI, 'PNG', 15, 30, 180, 80);
+        // Si necesitas añadir más resultados aquí, repite el proceso como arriba
+      }
+  
+      pdf.save('reporte-liquidez.pdf');
+    }).catch(error => {
+      console.error("Error al exportar los gráficos a PDF", error);
+    });
   }
+  
+  
  
 }
