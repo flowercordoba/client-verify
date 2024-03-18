@@ -11,7 +11,7 @@ export class MenuSidebarComponent {
   constructor(private authService: AuthService) {}
 
   onLogout(): void {
-    // this.authService.logout();
+    this.authService.logout();
   }
 
 }

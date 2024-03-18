@@ -6,7 +6,7 @@ import { TerminosCondicionesComponent } from './components/index/terminos-condic
 import { AuthGuard } from './core/guards/auth.guard';
 
 const routes: Routes = [
-  { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
+  { path: '', redirectTo: '/dashboard/liquidez', pathMatch: 'full' },
   { path: 'dashboard',
   canActivate:[AuthGuard],
   loadChildren: () => import('./modules/dashboard/dashboard.module').then((m) => m.DashboardModule) },

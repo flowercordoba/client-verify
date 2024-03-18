@@ -13,13 +13,15 @@ export class LiquidezComponent  {
   // recuerda el spinner de cargando! 
   liquidezForm: FormGroup;
   chart: ApexCharts | null = null;
-  chart2: ApexCharts | null = null; // Segunda gráfica
+  chart2: ApexCharts | null = null; 
 
   capitalDeTrabajo: number = 0;
   razonCorriente: number = 0;
   pruebaAcida: number = 0;
   constructor(private fb: FormBuilder) {
     this.liquidezForm = this.fb.group({
+      nombreEmpresa: [null, Validators.required],
+      nitEmpresa: [null, Validators.required],
       activoCorriente: [null, Validators.required],
       pasivoCorriente: [null, Validators.required],
       disponible: [null, Validators.required],
@@ -38,6 +40,7 @@ export class LiquidezComponent  {
   actualizarGrafico(): void {
     const { activoCorriente, pasivoCorriente, disponible, inversionesTemporales, deudores } = this.liquidezForm.value;
   
+    
     const activoCorrienteNum = Number(activoCorriente);
     const pasivoCorrienteNum = Number(pasivoCorriente);
     const disponibleNum = Number(disponible);
@@ -177,7 +180,6 @@ export class LiquidezComponent  {
     }
   }
   
-
   exportToPDF(): void {
     Promise.all([
       this.chart?.dataURI(),
@@ -187,17 +189,26 @@ export class LiquidezComponent  {
       pdf.setFontSize(16);
       pdf.text('Reporte de Liquidez', 20, 20);
   
+      // Acceder a los valores del formulario
+      const nombreEmpresa = this.liquidezForm.get('nombreEmpresa')?.value || 'N/A';
+      const nitEmpresa = this.liquidezForm.get('nitEmpresa')?.value || 'N/A';
+  
+      // Añadir los valores del formulario al PDF
+      pdf.setFontSize(12);
+      pdf.text(`Nombre de la Empresa: ${nombreEmpresa}`, 20, 25);
+      pdf.text(`NIT de la Empresa: ${nitEmpresa}`, 20, 30);
+  
       // Añade el primer gráfico al PDF
       const firstChart = dataURIs[0] as { imgURI: string; blob?: Blob };
       if (firstChart.imgURI) {
-        pdf.addImage(firstChart.imgURI, 'PNG', 15, 30, 180, 80);
+        pdf.addImage(firstChart.imgURI, 'PNG', 15, 40, 180, 80); // Ajustar la posición Y según sea necesario
       }
   
-      // Añade resultados después del primer gráfico
+      // Continúa con el texto y gráficos siguientes
       pdf.setFontSize(12);
-      pdf.text(`Capital de Trabajo: ${this.capitalDeTrabajo.toFixed(2)}`, 20, 120);
-      pdf.text(`Razón Corriente: ${this.razonCorriente.toFixed(2)}`, 20, 130);
-      pdf.text(`Prueba Ácida: ${this.pruebaAcida.toFixed(2)}`, 20, 140);
+      pdf.text(`Capital de Trabajo: ${this.capitalDeTrabajo.toFixed(2)}`, 20, 130);
+      pdf.text(`Razón Corriente: ${this.razonCorriente.toFixed(2)}`, 20, 140);
+      pdf.text(`Prueba Ácida: ${this.pruebaAcida.toFixed(2)}`, 20, 150);
   
       // Verifica si hay un segundo gráfico para añadir
       const secondChart = dataURIs[1] as { imgURI: string; blob?: Blob };
@@ -205,8 +216,7 @@ export class LiquidezComponent  {
         pdf.addPage();
         pdf.setFontSize(16);
         pdf.text('Reporte de Liquidez - Continuación', 20, 20);
-        pdf.addImage(secondChart.imgURI, 'PNG', 15, 30, 180, 80);
-        // Si necesitas añadir más resultados aquí, repite el proceso como arriba
+        pdf.addImage(firstChart.imgURI, 'PNG', 15, 40, 90, 40); // Ajusta según necesidad
       }
   
       pdf.save('reporte-liquidez.pdf');

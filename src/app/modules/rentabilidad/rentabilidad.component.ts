@@ -23,6 +23,8 @@ export class RentabilidadComponent implements OnInit {
 
   constructor(private fb: FormBuilder) {
     this.rentabilidadForm = this.fb.group({
+      nombreEmpresa: [null, Validators.required],
+      nitEmpresa: [null, Validators.required],
       utilidadBruta: [null, Validators.required],
       ventasNetas: [null, Validators.required],
       utilidadOperacional: [null, Validators.required],
@@ -52,80 +54,7 @@ export class RentabilidadComponent implements OnInit {
   }
   
 
-  // actualizarGrafico(): void {
-  //   const { utilidadBruta, ventasNetas, utilidadOperacional, utilidadNeta, patrimonioLiquido, activoTotal } = this.rentabilidadForm.value;
 
-  //   const rentabilidadBruta = utilidadBruta / ventasNetas;
-  //   const rentabilidadOperacional = utilidadOperacional / ventasNetas;
-  //   const rentabilidadNeta = utilidadNeta / ventasNetas;
-  //   const rentabilidadPatrimonio = utilidadNeta / patrimonioLiquido;
-  //   const rentabilidadActivoTotal = utilidadNeta / activoTotal;
-
-  //   const series = [
-  //     {
-  //       name: 'Margen Bruto',
-  //       data: this.calcularProyeccion(rentabilidadBruta, 5, 0.05)
-  //     },
-  //     {
-  //       name: 'Margen Operativo',
-  //       data: this.calcularProyeccion(rentabilidadOperacional, 5, 0.05)
-  //     },
-  //     {
-  //       name: 'Margen Neto',
-  //       data: this.calcularProyeccion(rentabilidadNeta, 5, 0.05)
-  //     },
-  //     {
-  //       name: 'Rentabilidad del Patrimonio',
-  //       data: this.calcularProyeccion(rentabilidadPatrimonio, 5, 0.05)
-  //     },
-  //     {
-  //       name: 'Rentabilidad del Activo Total',
-  //       data: this.calcularProyeccion(rentabilidadActivoTotal, 5, 0.05)
-  //     }
-  //   ];
-
-  //   const options = {
-  //     series: series,
-  //     chart: {
-  //       type: 'bar',
-  //       height: 350
-  //     },
-  //     xaxis: {
-  //       categories: ['2024', '2025', '2026', '2027', '2028'] 
-  //     },
-  //     title: {
-  //       text: 'Análisis de Rentabilidad', 
-  //       align: 'left', 
-  //       style: {
-  //           fontSize: '10px',
-  //           fontWeight: 'bold',
-  //           color: '#263238'
-  //       }
-  //   },
-  //   plotOptions: {
-  //       bar: {
-  //           horizontal: false,
-  //           columnWidth: '45%',
-  //           endingShape: 'rounded'
-  //       },
-  //   },
-  //   dataLabels: {
-  //       enabled: false
-  //   },
-  //   stroke: {
-  //       show: false,
-  //       width: 2,
-  //       colors: ['transparent']
-  //   },
-  //       };
-
-  //   if (this.chartMargenes) {
-  //     this.chartMargenes.updateOptions({ series: series });
-  //   } else {
-  //     this.chartMargenes = new ApexCharts(document.querySelector("#chart"), options);
-  //     this.chartMargenes.render();
-  //   }
-  // }
   actualizarGrafico(): void {
     // Datos para el gráfico de márgenes
     const seriesMargenes = [
@@ -210,11 +139,24 @@ export class RentabilidadComponent implements OnInit {
       const pdf = new jsPDF();
       pdf.setFontSize(16);
       pdf.text('Reporte de Rentabilidad', 20, 20);
+
+         // Acceder a los valores del formulario
+         const nombreEmpresa = this.rentabilidadForm.get('nombreEmpresa')?.value || 'N/A';
+         const nitEmpresa = this.rentabilidadForm.get('nitEmpresa')?.value || 'N/A';
+     
+         // Añadir los valores del formulario al PDF
+         pdf.setFontSize(12);
+         pdf.text(`Nombre de la Empresa: ${nombreEmpresa}`, 20, 25);
+         pdf.text(`NIT de la Empresa: ${nitEmpresa}`, 20, 30);
+        //  pdf.addImage(firstChartURI.imgURI, 'PNG', 15, 40, 180, 80); // Ajustar la posición Y según sea necesario
+
   
       // Añade la primera gráfica al PDF, con aserción de tipo
       const firstChartURI = dataURIs[0] as { imgURI?: string; blob?: Blob };
       if (firstChartURI.imgURI) {
-        pdf.addImage(firstChartURI.imgURI, 'PNG', 15, 30, 180, 80);
+        // pdf.addImage(firstChartURI.imgURI, 'PNG', 15, 30, 180, 80);
+        pdf.addImage(firstChartURI.imgURI, 'PNG', 15, 40, 180, 80); // Ajustar la posición Y según sea necesario
+
         pdf.setFontSize(12);
         pdf.text(`Margen Bruto: ${this.margenBruto.toFixed(2)}%`, 20, 115);
         pdf.text(`Margen Operativo: ${this.margenOperativo.toFixed(2)}%`, 20, 125);

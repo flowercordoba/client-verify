@@ -1,21 +1,5 @@
 <main class="p-6">
 
-  <!-- <div class="grid xl:grid-cols-4 md:grid-cols-2 gap-6 mb-6">
-      <div class="card">
-          <div class="p-5 flex items-center justify-between">
-              <span>
-                  <span class="text-slate-400 font-semibold block">Total Solvencias</span>
-                  <span class="text-xl font-semibold">{{ totalGestiones }}</span> 
-              </span>
-
-              <span
-                  class="flex justify-center items-center h-14 w-14 bg-blue-600/5 shadow shadow-blue-600/5 text-blue-600">
-                  <i class="uil uil-user text-xl"></i>
-              </span>
-          </div>
-
-      </div>
-  </div> -->
   <div class="grid lg:grid-cols-2 gap-6 mb-6">
     <div class="grid ">
       <div class="">
@@ -24,10 +8,21 @@
           </div>
 
           <form [formGroup]="solvenciaForm" (ngSubmit)="actualizarGrafico()" class="space-y-4 bg-white p-6 rounded-lg shadow-md">
-           
+            <!-- nombreEmpresa: [null, Validators.required],
+            nitEmpresa: [null, Validators.required], -->
+
+            <div class="flex flex-col">
+              <label  class="mb-2 font-semibold text-gray-700">Nombre de la empresa:</label>
+              <input formControlName="nombreEmpresa" type="text" placeholder="Nombre de la empresa" required class="form-input mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50">
+          </div>
+          <div class="flex flex-col">
+            <label  class="mb-2 font-semibold text-gray-700">Nit:</label>
+            <input formControlName="nitEmpresa" type="number" placeholder="Nit" required class="form-input mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50">
+        </div>
+
         
             <div class="flex flex-col">
-                <label for="totalActivo" class="mb-2 font-semibold text-gray-700">Total Activo:</label>
+                <label  class="mb-2 font-semibold text-gray-700">Total Activo:</label>
                 <input formControlName="totalActivo" type="number" placeholder="Total Activo" required class="form-input mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50">
             </div>
             <p>Cifras en Millones (COP)</p>

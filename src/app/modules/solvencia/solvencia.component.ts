@@ -22,6 +22,8 @@ export class SolvenciaComponent implements OnInit {
   
   constructor(private fb: FormBuilder) {
     this.solvenciaForm = this.fb.group({
+      nombreEmpresa: [null, Validators.required],
+      nitEmpresa: [null, Validators.required],
       totalPasivo: [null, [Validators.required, Validators.min(0.01)]], // Asegúrate de que no sea nulo ni cero
       totalActivo: [null, Validators.required],
       pasivoCorriente: [null, Validators.required],
@@ -31,14 +33,6 @@ export class SolvenciaComponent implements OnInit {
 
     });
   }
-
-  // ngOnInit(): void {
-  //   this.solvenciaForm.valueChanges.subscribe(() => {
-  //     if (this.solvenciaForm.valid) {
-  //       this.actualizarGrafico();
-  //     }
-  //   });
-  // }
 
   ngOnInit(): void {
     this.solvenciaForm.valueChanges.subscribe(() => {
@@ -59,224 +53,6 @@ export class SolvenciaComponent implements OnInit {
     return true;
   }
   
-
-  // actualizarGrafico(): void {
-  //   const { totalPasivo, totalActivo, pasivoCorriente, pasivoTotal, ventasNetas, patrimonio } = this.solvenciaForm.value;
-    
-  //   console.log('Valores del formulario:', this.solvenciaForm.value);
-  
-  //   if (totalPasivo == null || patrimonio == null || totalPasivo === 0 || patrimonio === 0) {
-  //     console.error('El total de pasivo o el patrimonio son nulos o cero.');
-  //     return; // Salir de la función si los valores no son adecuados para el cálculo
-  //   }
-  
-  //   // Asegúrate de que los valores son números y no cadenas
-  //   const totalPasivoNum = Number(totalPasivo);
-  //   const patrimonioNum = Number(patrimonio);
-  
-  //   // Realiza el cálculo del endeudamientoPatrimonio
-  //   this.endeudamientoPatrimonio = +(totalPasivoNum / patrimonioNum * 100).toFixed(2);
-  
-  //   console.log('Endeudamiento sobre Patrimonio calculado:', this.endeudamientoPatrimonio);
-  
-  // }
-  
-  // actualizarGrafico(): void {
-  //   const { totalPasivo, totalActivo, pasivoCorriente, pasivoTotal, ventasNetas, patrimonio } = this.solvenciaForm.value;
-
-  //   // Conversión de string a número después de toFixed
-  //   this.nivelEndeudamiento = +((totalPasivo / totalActivo).toFixed(2));
-  //   this.concentracionEndeudamientoCortoPlazo = +((pasivoCorriente / pasivoTotal).toFixed(2));
-  //   this.endeudamientoVentas = +((pasivoTotal / ventasNetas).toFixed(2));
-  //   this.multiplicadorCapital = +((totalActivo / patrimonio).toFixed(2));
-  //   this.endeudamientoPatrimonio = +((totalPasivo / patrimonio) * 100).toFixed(2);
-
-
-  //   const series1 = [
-  //     {
-  //       name: 'Nivel de Endeudamiento',
-  //       data: [this.nivelEndeudamiento]
-  //     },
-  //     {
-  //       name: 'Concentración Endeudamiento Corto Plazo',
-  //       data: [this.concentracionEndeudamientoCortoPlazo]
-  //     }
-  //   ];
-
-  //   const series2 = [
-  //     {
-  //       name: 'Endeudamiento / Ventas',
-  //       data: [this.endeudamientoVentas]
-  //     },
-  //     {
-  //       name: 'Multiplicador de Capital',
-  //       data: [this.multiplicadorCapital]
-  //     },
-  //     {
-  //       name: 'Índice de Endeudamiento sobre Patrimonio',
-  //       data: [this.endeudamientoPatrimonio] 
-  //     }
-  //   ];
-  //   // const series3 = [
-  //   //   {
-  //   //     name: 'Índice de Endeudamiento',
-  //   //     data: [this.endeudamientoPatrimonio]
-  //   //   }
-  //   // ];
-
-  //   // Configuraciones del gráfico 1
-  //   const options1 = {
-  //     series: series1,
-  //     chart: {
-  //       type: 'bar',
-  //       height: 350
-  //     },
-  //     plotOptions: {
-  //       bar: {
-  //         horizontal: false,
-  //         columnWidth: '55%',
-  //         endingShape: 'rounded'
-  //       }
-  //     },
-  //     dataLabels: {
-  //       enabled: false
-  //     },
-  //     xaxis: {
-  //       categories: ['Indicadores Financieros']
-  //     }
-  //   };
-
-  //   // Configuraciones del gráfico 2
-  //   const options2 = {
-  //     series: series2,
-  //     chart: {
-  //       type: 'bar',
-  //       height: 350
-  //     },
-  //     plotOptions: {
-  //       bar: {
-  //         horizontal: false,
-  //         columnWidth: '55%',
-  //         endingShape: 'rounded'
-  //       }
-  //     },
-  //     dataLabels: {
-  //       enabled: false
-  //     },
-  //     xaxis: {
-  //       categories: ['Indicadores Financieros']
-  //     }
-  //   };
-
-  //   // Renderizar el primer gráfico
-  //   if (this.chart) {
-  //     this.chart.updateOptions(options1);
-  //   } else {
-  //     this.chart = new ApexCharts(document.querySelector("#chart"), options1);
-  //     this.chart.render();
-  //   }
-
-  //   // Renderizar el segundo gráfico
-  //   if (this.chart2) {
-  //     this.chart2.updateOptions(options2);
-  //   } else {
-  //     this.chart2 = new ApexCharts(document.querySelector("#chart2"), options2);
-  //     this.chart2.render();
-  //   }
-  // }
-
-  // actualizarGrafico(): void {
-  //   const valoresFormulario = this.solvenciaForm.value;
-  
-  //   console.log('Valores del formulario:', valoresFormulario);
-  
-  //   // Asegúrate de que todos los valores necesarios estén presentes y sean mayores a cero
-  //   if (!valoresFormulario.totalPasivo || !valoresFormulario.patrimonio || valoresFormulario.totalPasivo <= 0 || valoresFormulario.patrimonio <= 0) {
-  //     console.error('El total de pasivo o el patrimonio son nulos, cero o negativos.');
-  //     return; // Salir de la función si los valores no son adecuados para el cálculo
-  //   }
-    
-  
-  //   // Desestructuración de valores con validación de que son números positivos
-  //   const { totalPasivo, totalActivo, pasivoCorriente, pasivoTotal, ventasNetas, patrimonio } = valoresFormulario;
-  
-
-    
-  //   this.nivelEndeudamiento = Number((totalPasivo / totalActivo).toFixed(2));
-  //   this.concentracionEndeudamientoCortoPlazo = Number((pasivoCorriente / pasivoTotal).toFixed(2));
-  //   this.endeudamientoVentas = Number((pasivoTotal / ventasNetas).toFixed(2));
-  //   this.multiplicadorCapital = Number((totalActivo / patrimonio).toFixed(2));
-  //   this.endeudamientoPatrimonio = Number(((totalPasivo / patrimonio) * 100).toFixed(2));
-
-  //   }
-
-  // actualizarGrafico(): void {
-  //   const valoresFormulario = this.solvenciaForm.value;
-  
-  //   // Desestructuración de valores
-  //   const { totalPasivo, totalActivo, pasivoCorriente, pasivoTotal, ventasNetas, patrimonio } = valoresFormulario;
-  
-  //   // Asegúrate de que los valores son números y no cadenas
-  //   this.nivelEndeudamiento = Number((totalPasivo / totalActivo).toFixed(2));
-  //   this.concentracionEndeudamientoCortoPlazo = Number((pasivoCorriente / pasivoTotal).toFixed(2));
-  //   this.endeudamientoVentas = Number((pasivoTotal / ventasNetas).toFixed(2));
-  //   this.multiplicadorCapital = Number((totalActivo / patrimonio).toFixed(2));
-  //   this.endeudamientoPatrimonio = Number(((totalPasivo / patrimonio) * 100).toFixed(2));
-  
-  //   // Series y opciones del gráfico de barras
-  //   const series = [
-  //     {
-  //       name: 'Nivel de Endeudamiento',
-  //       data: [this.nivelEndeudamiento]
-  //     },
-  //     {
-  //       name: 'Concentración Endeudamiento Corto Plazo',
-  //       data: [this.concentracionEndeudamientoCortoPlazo]
-  //     },
-  //     {
-  //       name: 'Endeudamiento sobre Ventas',
-  //       data: [this.endeudamientoVentas]
-  //     },
-  //     {
-  //       name: 'Multiplicador de Capital',
-  //       data: [this.multiplicadorCapital]
-  //     },
-  //     {
-  //       name: 'Índice de Endeudamiento sobre Patrimonio',
-  //       data: [this.endeudamientoPatrimonio]
-  //     }
-  //   ];
-  
-  //   const options = {
-  //     chart: {
-  //       type: 'bar',
-  //       height: 350
-  //     },
-  //     plotOptions: {
-  //       bar: {
-  //         horizontal: false,
-  //         columnWidth: '55%',
-  //         endingShape: 'rounded'
-  //       },
-  //     },
-  //     dataLabels: {
-  //       enabled: false
-  //     },
-  //     series: series,
-  //     xaxis: {
-  //       categories: ['Indicadores Financieros']
-  //     }
-  //   };
-  
-  //   // Renderiza o actualiza el gráfico
-  //   if (this.chart) {
-  //     this.chart.updateOptions({ series });
-  //   } else {
-  //     this.chart = new ApexCharts(document.querySelector("#chart"), options);
-  //     this.chart.render();
-  //   }
-  
-  // }
 
 
   actualizarGrafico(): void {
@@ -383,34 +159,7 @@ export class SolvenciaComponent implements OnInit {
     }
   }
   
-  
-  
 
-  // exportToPDF(): void {
-  //   Promise.all([
-  //     this.chart?.dataURI(),
-  //     this.chart2?.dataURI()
-  //   ]).then((dataURIs) => {
-  //     const pdf = new jsPDF();
-  //     pdf.setFontSize(16);
-  //     pdf.text('Reporte de Solvencia', 20, 20);
-      
-  //     // Asegurarse de que dataURIs[0] tiene imgURI
-  //     const firstChart = dataURIs[0] as { imgURI?: string; blob?: Blob };
-  //     if (firstChart.imgURI) {
-  //       pdf.addImage(firstChart.imgURI, 'PNG', 15, 25, 180, 80);
-  //     }
-  
-  //     // Asegurarse de que dataURIs[1] tiene imgURI
-  //     const secondChart = dataURIs[1] as { imgURI?: string; blob?: Blob };
-  //     if (secondChart.imgURI) {
-  //       pdf.addPage();
-  //       pdf.addImage(secondChart.imgURI, 'PNG', 15, 25, 180, 80);
-  //     }
-  
-  //     pdf.save('reporte-solvencia.pdf');
-  //   }).catch(error => console.error("Error al exportar los gráficos a PDF", error));
-  // }
 
   exportToPDF(): void {
     Promise.all([
@@ -420,12 +169,24 @@ export class SolvenciaComponent implements OnInit {
       const pdf = new jsPDF();
       pdf.setFontSize(16);
       pdf.text('Reporte de Solvencia', 20, 20);
+
+          // Acceder a los valores del formulario
+          const nombreEmpresa = this.solvenciaForm.get('nombreEmpresa')?.value || 'N/A';
+          const nitEmpresa = this.solvenciaForm.get('nitEmpresa')?.value || 'N/A';
+      
+
+      pdf.text(`Nombre de la Empresa: ${nombreEmpresa}`, 20, 25);
+      pdf.text(`NIT de la Empresa: ${nitEmpresa}`, 20, 30);
+     //  pdf.addImage(firstChartURI.imgURI, 'PNG', 15, 40, 180, 80); // Ajustar la posición Y según sea necesario
+
+
   
       // Asegurarse de que dataURIs[0] tiene imgURI
       const firstChart = dataURIs[0] as { imgURI?: string; blob?: Blob };
       if (firstChart.imgURI) {
         pdf.addImage(firstChart.imgURI, 'PNG', 15, 40, 180, 80); // Ajustado para dejar espacio al texto
       }
+
   
       // Asegurarse de que dataURIs[1] tiene imgURI
       const secondChart = dataURIs[1] as { imgURI?: string; blob?: Blob };
@@ -444,15 +205,7 @@ export class SolvenciaComponent implements OnInit {
       pdf.save('reporte-solvencia.pdf');
     }).catch(error => console.error("Error al exportar los gráficos a PDF", error));
   }
-  
-  // debugValoresCalculados(): void {
-  //   console.log("Valores del formulario:", this.solvenciaForm.value);
-  //   console.log("Nivel de Endeudamiento:", this.nivelEndeudamiento);
-  //   console.log("Concentración de Endeudamiento Corto Plazo:", this.concentracionEndeudamientoCortoPlazo);
-  //   console.log("Endeudamiento sobre Ventas:", this.endeudamientoVentas);
-  //   console.log("Multiplicador de Capital:", this.multiplicadorCapital);
-  //   console.log("Índice de Endeudamiento sobre Patrimonio:", this.endeudamientoPatrimonio);
 
 
-  // }
+
 }

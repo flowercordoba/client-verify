@@ -72,9 +72,9 @@ export class AuthService {
   }
   
   logout(): void {
-    localStorage.removeItem('token'); // Limpia el token del localStorage
-    this.usuarioSubject.next(null); // Opcionalmente, limpia el usuario actual
-    this.router.navigateByUrl('/login'); // Redirige al usuario a la página de inicio de sesión
+    localStorage.removeItem('token'); 
+    this.usuarioSubject.next(null); 
+    this.router.navigateByUrl('/auth/login');
   }
   
 

@@ -1,0 +1,12 @@
+.form-background {
+    background-image: url('../../../../../assets/images/fondo-3.png'); /* Cambia '/path/to/your/image.jpg' con la ruta real de tu imagen */
+    background-size: cover; /* Cubre completamente el área sin perder las proporciones */
+    background-position: left; /* Centra la imagen en el formulario */
+    background-repeat: no-repeat; /* Evita que la imagen se repita */
+    background-position: center; /* Centra la imagen en el formulario */
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
