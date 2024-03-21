@@ -180,43 +180,66 @@ export class LiquidezComponent  {
     }
   }
   
+
+  
+
   exportToPDF(): void {
     Promise.all([
       this.chart?.dataURI(),
       this.chart2?.dataURI()
     ]).then((dataURIs) => {
       const pdf = new jsPDF();
-      pdf.setFontSize(16);
-      pdf.text('Reporte de Liquidez', 20, 20);
   
-      // Acceder a los valores del formulario
       const nombreEmpresa = this.liquidezForm.get('nombreEmpresa')?.value || 'N/A';
       const nitEmpresa = this.liquidezForm.get('nitEmpresa')?.value || 'N/A';
   
-      // Añadir los valores del formulario al PDF
-      pdf.setFontSize(12);
-      pdf.text(`Nombre de la Empresa: ${nombreEmpresa}`, 20, 25);
-      pdf.text(`NIT de la Empresa: ${nitEmpresa}`, 20, 30);
+      const addHeader = (pageNumber: number) => {
+        pdf.setFillColor(100, 100, 240);
+        pdf.rect(0, 0, pdf.internal.pageSize.getWidth(), 20, 'F');
+        pdf.setTextColor(255, 255, 255);
+        pdf.setFontSize(10);
+        pdf.text(`Nombre de la empresa: ${nombreEmpresa}`, 20, 10);
+        pdf.text(`NIT de la empresa: ${nitEmpresa}`, 20, 15);
+        pdf.text(`Página ${pageNumber}`, pdf.internal.pageSize.getWidth() - 40, 15);
+      };
   
-      // Añade el primer gráfico al PDF
+      const addFooter = (pageNumber: number) => {
+        const fechaCreacionPDF = new Date().toLocaleDateString();
+        pdf.setFillColor(100, 100, 240);
+        pdf.rect(0, pdf.internal.pageSize.getHeight() - 20, pdf.internal.pageSize.getWidth(), 20, 'F');
+        pdf.setTextColor(255, 255, 255);
+        pdf.setFontSize(10);
+        pdf.text(`Fecha de creación del PDF: ${fechaCreacionPDF}`, 20, pdf.internal.pageSize.getHeight() - 15);
+      };
+  
+      let pageNumber = 1;
+      addHeader(pageNumber);
+      addFooter(pageNumber);
+  
+      pdf.setFontSize(16);
+      pdf.setTextColor(0);
+      pdf.text('Reporte de Liquidez', 20, 30);
+  
       const firstChart = dataURIs[0] as { imgURI: string; blob?: Blob };
       if (firstChart.imgURI) {
-        pdf.addImage(firstChart.imgURI, 'PNG', 15, 40, 180, 80); // Ajustar la posición Y según sea necesario
+        pdf.addImage(firstChart.imgURI, 'PNG', 15, 40, 180, 80);
       }
   
-      // Continúa con el texto y gráficos siguientes
       pdf.setFontSize(12);
       pdf.text(`Capital de Trabajo: ${this.capitalDeTrabajo.toFixed(2)}`, 20, 130);
       pdf.text(`Razón Corriente: ${this.razonCorriente.toFixed(2)}`, 20, 140);
       pdf.text(`Prueba Ácida: ${this.pruebaAcida.toFixed(2)}`, 20, 150);
   
-      // Verifica si hay un segundo gráfico para añadir
       const secondChart = dataURIs[1] as { imgURI: string; blob?: Blob };
       if (secondChart?.imgURI) {
         pdf.addPage();
+        pageNumber += 1;
+        addHeader(pageNumber);
+        addFooter(pageNumber);
         pdf.setFontSize(16);
-        pdf.text('Reporte de Liquidez - Continuación', 20, 20);
-        pdf.addImage(firstChart.imgURI, 'PNG', 15, 40, 90, 40); // Ajusta según necesidad
+        pdf.setTextColor(0);
+        pdf.text('Reporte de Liquidez - Continuación', 20, 25);
+        pdf.addImage(secondChart.imgURI, 'PNG', 15, 35, 90, 45);
       }
   
       pdf.save('reporte-liquidez.pdf');
@@ -224,6 +247,8 @@ export class LiquidezComponent  {
       console.error("Error al exportar los gráficos a PDF", error);
     });
   }
+  
+  
   
   
  
