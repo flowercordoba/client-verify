@@ -131,48 +131,113 @@ export class RentabilidadComponent implements OnInit {
     }
   }
   
+  // exportToPDF(): void {
+  //   Promise.all([
+  //     this.chartMargenes?.dataURI(),
+  //     this.chartRentabilidad?.dataURI()
+  //   ]).then((dataURIs) => {
+  //     const pdf = new jsPDF();
+  //     pdf.setFontSize(16);
+  //     pdf.text('Reporte de Rentabilidad', 20, 20);
+
+  //        // Acceder a los valores del formulario
+  //        const nombreEmpresa = this.rentabilidadForm.get('nombreEmpresa')?.value || 'N/A';
+  //        const nitEmpresa = this.rentabilidadForm.get('nitEmpresa')?.value || 'N/A';
+     
+  //        // Añadir los valores del formulario al PDF
+  //        pdf.setFontSize(12);
+  //        pdf.text(`Nombre de la Empresa: ${nombreEmpresa}`, 20, 25);
+  //        pdf.text(`NIT de la Empresa: ${nitEmpresa}`, 20, 30);
+  //       //  pdf.addImage(firstChartURI.imgURI, 'PNG', 15, 40, 180, 80); // Ajustar la posición Y según sea necesario
+
+  
+  //     // Añade la primera gráfica al PDF, con aserción de tipo
+  //     const firstChartURI = dataURIs[0] as { imgURI?: string; blob?: Blob };
+  //     if (firstChartURI.imgURI) {
+  //       // pdf.addImage(firstChartURI.imgURI, 'PNG', 15, 30, 180, 80);
+  //       pdf.addImage(firstChartURI.imgURI, 'PNG', 15, 40, 180, 80); // Ajustar la posición Y según sea necesario
+
+  //       pdf.setFontSize(12);
+  //       pdf.text(`Margen Bruto: ${this.margenBruto.toFixed(2)}%`, 20, 115);
+  //       pdf.text(`Margen Operativo: ${this.margenOperativo.toFixed(2)}%`, 20, 125);
+  //       pdf.text(`Margen Neto: ${this.margenNeto.toFixed(2)}%`, 20, 135);
+  //     }
+  
+  //     // Añade una nueva página para el segundo gráfico y sus resultados, con aserción de tipo
+  //     const secondChartURI = dataURIs[1] as { imgURI?: string; blob?: Blob };
+  //     if (secondChartURI.imgURI) {
+  //       pdf.addPage();
+  //       pdf.setFontSize(16);
+  //       pdf.text('Continuación Reporte de Rentabilidad', 20, 20);
+  //       pdf.addImage(secondChartURI.imgURI, 'PNG', 15, 30, 180, 80);
+  //       pdf.setFontSize(12);
+  //       pdf.text(`Rentabilidad del Patrimonio: ${this.rentabilidadPatrimonio.toFixed(2)}%`, 20, 115);
+  //       pdf.text(`Rentabilidad del Activo Total: ${this.rentabilidadActivoTotal.toFixed(2)}%`, 20, 125);
+  //     }
+  
+  //     pdf.save('reporte-rentabilidad.pdf');
+  //   }).catch(error => {
+  //     console.error("Error al exportar los gráficos a PDF", error);
+  //   });
+  // }
+
   exportToPDF(): void {
     Promise.all([
       this.chartMargenes?.dataURI(),
       this.chartRentabilidad?.dataURI()
     ]).then((dataURIs) => {
       const pdf = new jsPDF();
-      pdf.setFontSize(16);
-      pdf.text('Reporte de Rentabilidad', 20, 20);
-
-         // Acceder a los valores del formulario
-         const nombreEmpresa = this.rentabilidadForm.get('nombreEmpresa')?.value || 'N/A';
-         const nitEmpresa = this.rentabilidadForm.get('nitEmpresa')?.value || 'N/A';
-     
-         // Añadir los valores del formulario al PDF
-         pdf.setFontSize(12);
-         pdf.text(`Nombre de la Empresa: ${nombreEmpresa}`, 20, 25);
-         pdf.text(`NIT de la Empresa: ${nitEmpresa}`, 20, 30);
-        //  pdf.addImage(firstChartURI.imgURI, 'PNG', 15, 40, 180, 80); // Ajustar la posición Y según sea necesario
-
+      let pageNumber = 1;
   
-      // Añade la primera gráfica al PDF, con aserción de tipo
+      // Funciones addHeader y addFooter
+      const addHeader = (pageNumber: number) => {
+        pdf.setFillColor(100, 100, 240);
+        pdf.rect(0, 0, pdf.internal.pageSize.getWidth(), 20, 'F');
+        pdf.setTextColor(255, 255, 255);
+        pdf.setFontSize(10);
+        pdf.text(`Nombre de la empresa: ${this.rentabilidadForm.get('nombreEmpresa')?.value || 'N/A'}`, 20, 10);
+        pdf.text(`NIT de la empresa: ${this.rentabilidadForm.get('nitEmpresa')?.value || 'N/A'}`, 20, 15);
+        pdf.text(`Página ${pageNumber}`, pdf.internal.pageSize.getWidth() - 40, 15);
+      };
+  
+      const addFooter = (pageNumber: number) => {
+        const fechaCreacionPDF = new Date().toLocaleDateString();
+        pdf.setFillColor(100, 100, 240);
+        pdf.rect(0, pdf.internal.pageSize.getHeight() - 20, pdf.internal.pageSize.getWidth(), 20, 'F');
+        pdf.setTextColor(255, 255, 255);
+        pdf.setFontSize(10);
+        pdf.text(`Fecha de creación del PDF: ${fechaCreacionPDF}`, 20, pdf.internal.pageSize.getHeight() - 15);
+      };
+  
+      // Añadir encabezado y pie de página a la primera página
+      addHeader(pageNumber);
+      addFooter(pageNumber);
+  
+      pdf.setFontSize(16);
+      pdf.text('Reporte de Rentabilidad', 20, 30);
+  
       const firstChartURI = dataURIs[0] as { imgURI?: string; blob?: Blob };
-      if (firstChartURI.imgURI) {
-        // pdf.addImage(firstChartURI.imgURI, 'PNG', 15, 30, 180, 80);
-        pdf.addImage(firstChartURI.imgURI, 'PNG', 15, 40, 180, 80); // Ajustar la posición Y según sea necesario
-
+      if (firstChartURI?.imgURI) {
+        pdf.addImage(firstChartURI.imgURI, 'PNG', 15, 40, 180, 80);
         pdf.setFontSize(12);
-        pdf.text(`Margen Bruto: ${this.margenBruto.toFixed(2)}%`, 20, 115);
-        pdf.text(`Margen Operativo: ${this.margenOperativo.toFixed(2)}%`, 20, 125);
-        pdf.text(`Margen Neto: ${this.margenNeto.toFixed(2)}%`, 20, 135);
+        pdf.text(`Margen Bruto: ${this.margenBruto.toFixed(2)}%`, 20, 135);
+        pdf.text(`Margen Operativo: ${this.margenOperativo.toFixed(2)}%`, 20, 145);
+        pdf.text(`Margen Neto: ${this.margenNeto.toFixed(2)}%`, 20, 155);
       }
   
-      // Añade una nueva página para el segundo gráfico y sus resultados, con aserción de tipo
       const secondChartURI = dataURIs[1] as { imgURI?: string; blob?: Blob };
-      if (secondChartURI.imgURI) {
+      if (secondChartURI?.imgURI) {
+        // Solo añadir una nueva página si hay un segundo gráfico para mostrar
+        pageNumber += 1;
         pdf.addPage();
+        addHeader(pageNumber);
+        addFooter(pageNumber);
         pdf.setFontSize(16);
         pdf.text('Continuación Reporte de Rentabilidad', 20, 20);
         pdf.addImage(secondChartURI.imgURI, 'PNG', 15, 30, 180, 80);
         pdf.setFontSize(12);
-        pdf.text(`Rentabilidad del Patrimonio: ${this.rentabilidadPatrimonio.toFixed(2)}%`, 20, 115);
-        pdf.text(`Rentabilidad del Activo Total: ${this.rentabilidadActivoTotal.toFixed(2)}%`, 20, 125);
+        pdf.text(`Rentabilidad del Patrimonio: ${this.rentabilidadPatrimonio.toFixed(2)}%`, 20, 135);
+        pdf.text(`Rentabilidad del Activo Total: ${this.rentabilidadActivoTotal.toFixed(2)}%`, 20, 145);
       }
   
       pdf.save('reporte-rentabilidad.pdf');
@@ -180,6 +245,8 @@ export class RentabilidadComponent implements OnInit {
       console.error("Error al exportar los gráficos a PDF", error);
     });
   }
+  
+  
   
   
   

@@ -73,15 +73,15 @@ export class GestionComponent {
 
     const series = [
       {
-        name: "Periodo de Cobro (días)",
+        name: "Periodo de Cobro (Año)",
         data: dataPeriodoDeCobro,
       },
       {
-        name: "Periodo de Inventario (días)",
+        name: "Periodo de Inventario (Año)",
         data: dataPeriodoDeInventario,
       },
       {
-        name: "Periodo de Pago (días)",
+        name: "Periodo de Pago (Año)",
         data: dataPeriodoDePago,
       },
     ];
@@ -148,36 +148,83 @@ export class GestionComponent {
     }
   }
 
+  // exportToPDF() {
+  //   this.chart
+  //     .dataURI()
+  //     .then((data: { imgURI?: string; blob?: Blob }) => {
+  //       if (data.imgURI) {
+  //         const pdf = new jsPDF();
+  //         // Título de la gráfica
+  //         pdf.setFontSize(16);
+  //         pdf.text("Graficas", 20, 20);
+  //         // Acceder a los valores del formulario
+  //         const nombreEmpresa =
+  //           this.gestionForm.get("nombreEmpresa")?.value || "N/A";
+  //         const nitEmpresa = this.gestionForm.get("nitEmpresa")?.value || "N/A";
+
+  //         pdf.text(`Nombre de la Empresa: ${nombreEmpresa}`, 20, 25);
+  //         pdf.text(`NIT de la Empresa: ${nitEmpresa}`, 20, 30);
+
+  //         // Añade la gráfica al PDF
+  //         pdf.addImage(data.imgURI, "PNG", 15, 40, 180, 80);
+
+  //         // pdf.addImage(data.imgURI, 'PNG', 10, 30, 180, 100); // Ajusta según necesidades
+  //         pdf.save("dashed-line-chart.pdf");
+  //       } else {
+  //         console.error(
+  //           "No se pudo obtener la URI de la imagen de la gráfica."
+  //         );
+  //       }
+  //     })
+  //     .catch((error) =>
+  //       console.error("Error al exportar la gráfica a PDF", error)
+  //     );
+  // }
+
   exportToPDF() {
-    this.chart
-      .dataURI()
-      .then((data: { imgURI?: string; blob?: Blob }) => {
-        if (data.imgURI) {
-          const pdf = new jsPDF();
-          // Título de la gráfica
-          pdf.setFontSize(16);
-          pdf.text("Graficas", 20, 20);
-          // Acceder a los valores del formulario
-          const nombreEmpresa =
-            this.gestionForm.get("nombreEmpresa")?.value || "N/A";
-          const nitEmpresa = this.gestionForm.get("nitEmpresa")?.value || "N/A";
-
-          pdf.text(`Nombre de la Empresa: ${nombreEmpresa}`, 20, 25);
-          pdf.text(`NIT de la Empresa: ${nitEmpresa}`, 20, 30);
-
-          // Añade la gráfica al PDF
-          pdf.addImage(data.imgURI, "PNG", 15, 40, 180, 80);
-
-          // pdf.addImage(data.imgURI, 'PNG', 10, 30, 180, 100); // Ajusta según necesidades
-          pdf.save("dashed-line-chart.pdf");
-        } else {
-          console.error(
-            "No se pudo obtener la URI de la imagen de la gráfica."
-          );
-        }
-      })
-      .catch((error) =>
-        console.error("Error al exportar la gráfica a PDF", error)
-      );
+    this.chart.dataURI().then((data: { imgURI?: string; blob?: Blob }) => {
+      if (data.imgURI) {
+        const pdf = new jsPDF();
+  
+        // Funciones para agregar encabezado y pie de página
+        const addHeader = (pdf: jsPDF) => {
+          const nombreEmpresa = this.gestionForm.get('nombreEmpresa')?.value || 'N/A';
+          const nitEmpresa = this.gestionForm.get('nitEmpresa')?.value || 'N/A';
+  
+          pdf.setFillColor(100, 100, 240); // Color del encabezado
+          pdf.rect(0, 0, pdf.internal.pageSize.getWidth(), 20, 'F');
+          pdf.setTextColor(255, 255, 255);
+          pdf.setFontSize(10);
+          pdf.text(`Nombre de la Empresa: ${nombreEmpresa}`, 20, 10);
+          pdf.text(`NIT de la Empresa: ${nitEmpresa}`, 20, 15);
+        };
+  
+        const addFooter = (pdf: jsPDF) => {
+          const fechaCreacionPDF = new Date().toLocaleDateString();
+          pdf.setFillColor(100, 100, 240); // Color del pie de página
+          pdf.rect(0, pdf.internal.pageSize.getHeight() - 20, pdf.internal.pageSize.getWidth(), 20, 'F');
+          pdf.setTextColor(255, 255, 255);
+          pdf.setFontSize(10);
+          pdf.text(`Fecha de creación del PDF: ${fechaCreacionPDF}`, 20, pdf.internal.pageSize.getHeight() - 15);
+        };
+  
+        // Añadir encabezado y pie de página
+        addHeader(pdf);
+        addFooter(pdf);
+  
+        // Título de la gráfica
+        pdf.setFontSize(16);
+        pdf.setTextColor(0);
+        pdf.text("Gráficas", 20, 30);
+  
+        // Añade la gráfica al PDF
+        pdf.addImage(data.imgURI, 'PNG', 15, 40, 180, 80);
+  
+        pdf.save("grafica.pdf");
+      } else {
+        console.error("No se pudo obtener la URI de la imagen de la gráfica.");
+      }
+    }).catch((error) => console.error("Error al exportar la gráfica a PDF", error));
   }
+  
 }
