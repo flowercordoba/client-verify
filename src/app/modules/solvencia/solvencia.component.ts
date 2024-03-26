@@ -68,8 +68,7 @@ export class SolvenciaComponent implements OnInit {
     this.multiplicadorCapital = Number((totalActivo / patrimonio).toFixed(2));
 
     this.endeudamientoPatrimonio = Number(((totalPasivo / patrimonio) * 100).toFixed(2));
-    // console.log("Total Pasivo:", totalPasivo, "Patrimonio:", patrimonio, "Índice de Endeudamiento sobre Patrimonio calculado:", this.endeudamientoPatrimonio);
-    // this.debugValoresCalculados();
+
 
     
 

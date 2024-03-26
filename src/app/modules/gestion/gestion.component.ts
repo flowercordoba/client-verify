@@ -104,16 +104,16 @@ export class GestionComponent {
           },
         },
       },
-      yaxis: {
-        title: {
-          text: "Días",
-          style: {
-            fontSize: "12px",
-            fontWeight: "bold",
-            color: "#263238",
-          },
-        },
-      },
+      // yaxis: {
+      //   title: {
+      //     text: "Días",
+      //     style: {
+      //       fontSize: "12px",
+      //       fontWeight: "bold",
+      //       color: "#263238",
+      //     },
+      //   },
+      // },
       title: {
         text: "Análisis de Periodo de Cobro, Inventario y Pago",
         align: "left",
